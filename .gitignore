@@ -1,0 +1,8 @@
+node_modules/
+.tmp/
+spec/test_app/scripts/main.js
+
+.idea/
+cukefarm.iml
+
+.DS_Store
