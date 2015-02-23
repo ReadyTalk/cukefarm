@@ -16,7 +16,7 @@
     "rekuire": "^0.1.5"
   },
   "author": "Nathan Thompson",
-  "license": "ReadyTalk",
+  "license": "MIT",
   "devDependencies": {
     "coffeelint": "^1.6.0",
     "grunt": "^0.4.5",
