@@ -9,11 +9,9 @@ CukeFarm is intended to be used with the [grunt-protractor-runner] plugin. Check
 
 # Installation
 
-Add CukeFarm to your `package.json` file under the `devDependencies` property:
+Install CukeFarm by executing the following command from the root of your project:
 
-    "cukefarm": "git+ssh://git@github.com:ReadyTalk/cukefarm.git"
-
-Then run `npm install` from the command line within your project.
+    npm install cukefarm --save-dev
 
 # Set Up
 

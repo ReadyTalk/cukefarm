@@ -32,5 +32,12 @@
     "sinon": "^1.10.3",
     "sinon-as-promised": "^1.2.0",
     "time-grunt": "^1.0.0"
-  }
+  },
+  "homepage": "https://github.com/ReadyTalk/cukefarm",
+  "keywords": [
+    "cucumber",
+    "cucumberjs",
+    "protractor",
+    "selenium"
+  ]
 }
