@@ -41,6 +41,6 @@
     "selenium"
   ],
   "scripts": {
-    "test": "./node_modules/grunt-cli/bin/grunt"
+    "test": "grunt"
   }
 }
