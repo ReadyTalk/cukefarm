@@ -39,5 +39,8 @@
     "cucumberjs",
     "protractor",
     "selenium"
-  ]
+  ],
+  "scripts": {
+    "test": "./node_modules/grunt-cli/bin/grunt"
+  }
 }
