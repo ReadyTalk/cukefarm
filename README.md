@@ -9,11 +9,9 @@ CukeFarm is intended to be used with the [grunt-protractor-runner] plugin. Check
 
 # Installation
 
-Add CukeFarm to your `package.json` file under the `devDependencies` property:
+Install CukeFarm by executing the following command from the root of your project:
 
-    "cukefarm": "git+ssh://git@github.com:ReadyTalk/cukefarm.git"
-
-Then run `npm install` from the command line within your project.
+    npm install cukefarm --save-dev
 
 # Set Up
 
@@ -265,8 +263,8 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 # Running CukeFarm Unit Tests
 
 * Run `npm install` to download dependencies.
-* Run `grunt` to lint all files and run the unit tests.
-    * If grunt-cli is not installed globally you can instead run `./node_modules/grunt-cli/bin/grunt` from the root of this project.
+* Run `npm test` to lint all files and run the unit tests.
+    * This is also the default [Grunt] task
 
 [grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
 [Protractor]:https://github.com/angular/protractor
@@ -274,3 +272,4 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule
+[Grunt]:http://gruntjs.com
