@@ -17,7 +17,7 @@ module.exports = ->
     browser.manage().window().setSize parseInt(width, 10), parseInt(height, 10)
     callback()
 
-  @When /^I (?:click) (?:backwards|back) in my browser$/, (callback) ->
+  @When /^I (?:navigate|click) (?:backwards|back) in my browser$/, (callback) ->
     browser.navigate().back()
     callback()
 
