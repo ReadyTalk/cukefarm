@@ -41,6 +41,8 @@
     "selenium"
   ],
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "test-firefox": "grunt ci:firefox",
+    "test-chrome": "grunt ci:chrome"
   }
 }

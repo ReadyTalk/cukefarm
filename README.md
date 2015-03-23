@@ -3,6 +3,8 @@ CukeFarm
 
 An opinionated template for writing Cucumber tests with Protractor.
 
+[![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=travis_test)](https://travis-ci.org/ReadyTalk/cukefarm)
+
 # Getting Started
 
 CukeFarm is intended to be used with the [grunt-protractor-runner] plugin. Check out their documentation for help setting up the necessary Grunt tasks.
@@ -262,9 +264,18 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 
 # Running CukeFarm Unit Tests
 
+* Install [Firefox]
 * Run `npm install` to download dependencies.
 * Run `npm test` to lint all files and run the unit tests.
     * This is also the default [Grunt] task
+
+## Running Unit Tests against a specific browser
+
+By default CukeFarm runs unit tests against Firefox. Follow these steps to explicitly test against a particular browser:
+
+* Install the correct browser
+* Run `npm install` to download dependencies.
+* Run `npm run-script test-<browser>` where `<browser>` is either `firefox` or `chrome`
 
 [grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
 [Protractor]:https://github.com/angular/protractor
@@ -272,4 +283,5 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule
+[Firefox]:https://www.mozilla.org/en-US/
 [Grunt]:http://gruntjs.com

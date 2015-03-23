@@ -23,6 +23,11 @@ module.exports = (grunt) ->
           args:
             browser: 'chrome'
 
+      firefox:
+        options:
+          args:
+            browser: 'firefox'
+
     shell:
       webdriverManagerUpdate:
         command: "node_modules/grunt-protractor-runner/node_modules/.bin/webdriver-manager update"
@@ -43,11 +48,18 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'lint', ['coffeelint']
 
-  grunt.registerTask 'test', [
-    'requirejs:compile'
-    'shell:webdriverManagerUpdate'
-    'connect:server'
-    'protractor:chrome'
-  ]
+  grunt.registerTask 'test', (target) ->
+    return grunt.task.run [
+      'requirejs:compile'
+      'shell:webdriverManagerUpdate'
+      'connect:server'
+      "protractor:#{target}"
+    ]
 
-  grunt.registerTask 'default', ['lint', 'test']
+  grunt.registerTask 'ci', (target) ->
+    return grunt.task.run [
+      'lint'
+      "test:#{target}"
+    ]
+
+  grunt.registerTask 'default', ['ci:firefox']
