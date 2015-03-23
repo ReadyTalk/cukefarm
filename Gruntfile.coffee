@@ -62,4 +62,4 @@ module.exports = (grunt) ->
       "test:#{target}"
     ]
 
-  grunt.registerTask 'default', ['ci:firefox']
+  grunt.registerTask('default', ['ci:firefox']);
