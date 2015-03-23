@@ -266,7 +266,6 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 * Run `npm test` to lint all files and run the unit tests.
     * This is also the default [Grunt] task
 
-
 [grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
 [Protractor]:https://github.com/angular/protractor
 [configFile option]:https://github.com/teerapap/grunt-protractor-runner#optionsconfigfile
