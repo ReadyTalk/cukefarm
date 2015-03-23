@@ -3,7 +3,7 @@ CukeFarm
 
 An opinionated template for writing Cucumber tests with Protractor.
 
-[![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=travis_test)](https://travis-ci.org/ReadyTalk/cukefarm)
+[![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=master)](https://travis-ci.org/ReadyTalk/cukefarm)
 
 # Getting Started
 
