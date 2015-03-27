@@ -9,7 +9,7 @@ sinonAsPromised = require('sinon-as-promised')(Promise)
 
 describe 'General Step Defs', ->
 
-  supportCodeFilePaths = [rek.path('../lib/step_definitions/GeneralStepDefs.coffee')]
+  supportCodeFilePaths = [rek.path('../src/step_definitions/GeneralStepDefs.coffee')]
   supportCodeLibrary = Cucumber.Cli.SupportCodeLoader(supportCodeFilePaths).getSupportCodeLibrary();
   ast_tree_walker = new Cucumber.Runtime.AstTreeWalker({}, supportCodeLibrary, {})
 

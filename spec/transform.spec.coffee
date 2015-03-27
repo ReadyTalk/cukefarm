@@ -1,7 +1,8 @@
-{expect} = require "chai"
+{expect} = require 'chai'
+rek = require 'rekuire'
 
-Transform = require '../lib/support/Transform'
-World = require('../lib/support/World').World
+Transform = rek 'Transform'
+{World} = rek 'World'
 
 describe 'transform', ->
 

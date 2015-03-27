@@ -4,14 +4,23 @@ module.exports = (grunt) ->
   require('jit-grunt') grunt,
     protractor: 'grunt-protractor-runner'
     connect: 'grunt-contrib-connect'
+    coffee: 'grunt-contrib-coffee'
 
   grunt.initConfig
+    coffee:
+      compile:
+        expand: true,
+        cwd: './src/',
+        src: ['**/*.coffee'],
+        dest: 'lib',
+        ext: '.js'
+
     coffeelint:
       options:
         configFile: 'coffeelint.json'
       all: [
         'Gruntfile.coffee'
-        'lib/**/*.coffee'
+        'src/**/*.coffee'
       ]
 
     protractor:
@@ -48,15 +57,16 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'lint', ['coffeelint']
 
-  grunt.registerTask 'test', (target) ->
+  grunt.registerTask 'test', (target = 'firefox') ->
     return grunt.task.run [
+      'coffee:compile'
       'requirejs:compile'
       'shell:webdriverManagerUpdate'
       'connect:server'
       "protractor:#{target}"
     ]
 
-  grunt.registerTask 'ci', (target) ->
+  grunt.registerTask 'ci', (target = 'firefox') ->
     return grunt.task.run [
       'lint'
       "test:#{target}"
