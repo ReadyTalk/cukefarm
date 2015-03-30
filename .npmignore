@@ -1,10 +1,9 @@
 .tmp/
-spec/test_app/scripts/main.js
+spec/
 src/
 Gruntfile.coffee
 coffeelint.json
 .travis.yml
-spec/
 
 .idea/
 cukefarm.iml
