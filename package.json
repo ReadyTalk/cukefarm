@@ -2,7 +2,7 @@
   "name": "cukefarm",
   "version": "1.0.0",
   "description": "An opinionated template for writing Cucumber tests with Protractor",
-  "main": "index.coffee",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ReadyTalk/cukefarm"
