@@ -12,7 +12,7 @@ describe 'transform', ->
     world = new World(->)
     expect(world.transform).to.be.an.instanceOf Transform
 
-  describe 'shouldToBoolean', ->
+  describe 'shouldToBoolean()', ->
 
     it 'should convert the string "should" to true', ->
       expect(transform.shouldToBoolean('should')).to.equal true
@@ -20,7 +20,7 @@ describe 'transform', ->
     it 'should convert the string "should not" to false', ->
       expect(transform.shouldToBoolean('should not')).to.equal false
 
-  describe 'stringToVariableName', ->
+  describe 'stringToVariableName()', ->
 
     it 'should make the first letter of a string lower case', ->
       expect(transform.stringToVariableName('Test')).to.equal 'test'
@@ -34,7 +34,7 @@ describe 'transform', ->
     it 'should replace "&" with "And"', ->
       expect(transform.stringToVariableName('Tom & Jerry')).to.equal 'tomAndJerry'
 
-  describe 'elementTypeToVariableName', ->
+  describe 'elementTypeToVariableName()', ->
 
     it 'should convert the string "drop down list" to "Select"', ->
       expect(transform.elementTypeToVariableName('drop down list')).to.equal 'Select'

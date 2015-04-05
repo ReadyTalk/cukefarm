@@ -51,8 +51,8 @@ module.exports = (grunt) ->
       generateApiDocs:
         command: [
           "node_modules/docha/bin/docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md'"
-          "node_modules/docha/bin/docha -p '.tmp/generalStepDefs.js' -o 'docs/generalStepDefs.md'"
-          "node_modules/docha/bin/docha -p '.tmp/transform.js' -o 'docs/transform.md'"
+          "node_modules/docha/bin/docha -p '.tmp/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md'"
+          "node_modules/docha/bin/docha -p '.tmp/transform.spec.js' -o 'docs/transform.md'"
         ].join '&'
 
     connect:

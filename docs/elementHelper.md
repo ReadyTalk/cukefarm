@@ -8,8 +8,8 @@ return expect(world.elementHelper).to.be.an.instanceOf(ElementHelper);
 ```
 
 
-## hasClass
- hasClass should return true if the element has the given class
+## hasClass()
+ hasClass() should return true if the element has the given class
 
 ```
 var el;
@@ -20,7 +20,7 @@ return expect(elementHelper.hasClass(el, 'test-class')).to.eventually.equal(true
 ```
 
 
- hasClass should return false if the element does not have the given class
+ hasClass() should return false if the element does not have the given class
 
 ```
 var el;
@@ -31,7 +31,7 @@ return expect(elementHelper.hasClass(el, 'fake-class')).to.eventually.equal(fals
 ```
 
 
- hasClass should return false if the element has no class
+ hasClass() should return false if the element has no class
 
 ```
 var el;
