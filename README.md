@@ -3,6 +3,8 @@ CukeFarm
 
 An opinionated template for writing Cucumber tests with Protractor.
 
+CukeFarm provides a set of Cucumber Steps that can be used to build feature files that are backed by automation using the [Protractor] framework. It also provides a set of helper functions that can be used when writing your own Step Definitions. Check out the [docs] directory for a full list of the Steps and helper functions. The docs are automatically generated using [docha].
+
 [![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=master)](https://travis-ci.org/ReadyTalk/cukefarm)
 
 # Getting Started
@@ -19,7 +21,7 @@ Install CukeFarm by executing the following command from the root of your projec
 
 ## Config Object
 
-CukeFarm provides a generic [Protractor] config file that will be passed to grunt-protractor-runner. However, you must provide some additional options that are specific to your project.
+CukeFarm provides a generic Protractor config file that will be passed to grunt-protractor-runner. However, you must provide some additional options that are specific to your project.
 
 ### Necessary Options
 
@@ -277,8 +279,10 @@ By default CukeFarm runs unit tests against Firefox. Follow these steps to expli
 * Run `npm install` to download dependencies.
 * Run `npm run-script test-<browser>` where `<browser>` is either `firefox` or `chrome`
 
+[Protractor]:http://angular.github.io/protractor
+[docs]:docs
+[docha]:https://github.com/tehsenaus/docha
 [grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
-[Protractor]:https://github.com/angular/protractor
 [configFile option]:https://github.com/teerapap/grunt-protractor-runner#optionsconfigfile
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
