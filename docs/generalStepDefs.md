@@ -1,5 +1,5 @@
 # General Step Defs
-## ___ (covered by ___)
+## \_\_\_ (covered by \_\_\_)
 ### regex
  regex should match "I am on the Moon (covered by MoonUnit)"
 
@@ -8,7 +8,7 @@ return verifyStepMatch('I am on the Moon (covered by MoonUnit)');
 ```
 
 
-## I am on the "___" page
+## I am on the "\_\_\_" page
 ### regex
  regex should match "I am on..."
 
@@ -55,7 +55,7 @@ return expect(stubPage.get.calledOnce).to.equal(true);
 ```
 
 
-## I have a ___x___ screen size
+## I have a \_\_\_x\_\_\_ screen size
 ### regex
  regex should match "I have..."
 
@@ -157,7 +157,7 @@ return expect(navigateSpy.calledOnce).to.equal(true);
 ```
 
 
-## I type "___" in the "___" field
+## I type "\_\_\_" in the "\_\_\_" field
 ### regex
  regex should match "...in..."
 
@@ -199,7 +199,7 @@ return expect(world.currentPage.nameField.sendKeys.calledWithExactly('First')).t
 ```
 
 
-## I click the "___" link
+## I click the "\_\_\_" link
 ### regex
  regex should match "...link"
 
@@ -287,7 +287,7 @@ return expect(browser.refresh.calledOnce).to.equal(true);
 ```
 
 
-## I select "___" in the "___" drop down list$/
+## I select "\_\_\_" in the "\_\_\_" drop down list$/
 ### regex
  regex should match 'I select "Mountain Standard" in the "Time Zone" drop down list'
 
@@ -315,7 +315,7 @@ return executeStep('I select "Mountain Standard" in the "Time Zone" drop down li
 ```
 
 
-## the title should equal "___"
+## the title should equal "\_\_\_"
 ### regex
  regex should match 'the title should equal "My Title"'
 
@@ -350,7 +350,7 @@ return executeStep('the title should equal "Fake Title"', function(stepResult) {
 ```
 
 
-## the "___" should be active
+## the "\_\_\_" should be active
 ### regex
  regex should match "...should be active"
 
@@ -412,7 +412,7 @@ return executeStep('the "Button" should not be active', function(stepResult) {
 ```
 
 
-## the "___" should be present
+## the "\_\_\_" should be present
 ### regex
  regex should match 'the "Home Button" should be present'
 
@@ -449,7 +449,7 @@ return executeStep('the "Button" should be present', function(stepResult) {
 ```
 
 
-## I should be on the "___" page
+## I should be on the "\_\_\_" page
 ### regex
  regex should match "I should be on..."
 
@@ -503,7 +503,7 @@ return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
 ```
 
 
-## "___" should have the text "___"
+## "\_\_\_" should have the text "\_\_\_"
 ### regex
  regex should match 'the "Field" should...'
 
@@ -587,7 +587,7 @@ return executeStep('the "Test Input" should contain the text "Input Text"', func
 ```
 
 
-## "___" should appear in the "___" drop down list
+## "\_\_\_" should appear in the "\_\_\_" drop down list
 ### regex
  regex should match '"Mountain Time" should appear in the "Time Zone" drop down list'
 
@@ -622,7 +622,7 @@ return executeStep('"Pacific Standard" should appear in the "Time Zone" drop dow
 ```
 
 
-## the "___" should be displayed
+## the "\_\_\_" should be displayed
 ### regex
  regex should match "...should be displayed"
 
@@ -703,7 +703,7 @@ return executeStep('the "Test Span" should be displayed', function(stepResult) {
 ```
 
 
-## the "___" should have the placeholder text "___"
+## the "\_\_\_" should have the placeholder text "\_\_\_"
 ### regex
  regex should match a step starting with "the..."
 
@@ -766,23 +766,23 @@ return executeStep('the "Test Input" should have the placeholder text "Fake Plac
 ```
 
 
-## the "___" should be enabled
+## the "\_\_\_" should be enabled
 ### regex
- regex should match 'the "___" button...'
+ regex should match 'the "\_\_\_" button...'
 
 ```
 return verifyStepMatch('the "Save Configuration" button should be enabled');
 ```
 
 
- regex should match 'the "___" field...'
+ regex should match 'the "\_\_\_" field...'
 
 ```
 return verifyStepMatch('the "Username" field should be enabled');
 ```
 
 
- regex should match 'the "___" drop down list...'
+ regex should match 'the "\_\_\_" drop down list...'
 
 ```
 return verifyStepMatch('the "Timezone" drop down list should be enabled');
@@ -863,7 +863,7 @@ return executeStep('the "Test" button should not be enabled', function(stepResul
 ```
 
 
-## "___" should be selected in the "___" drop down list
+## "\_\_\_" should be selected in the "\_\_\_" drop down list
 ### regex
  regex should match '...should be selected...'
 
@@ -912,7 +912,7 @@ return executeStep('"Mountain Standard" should be selected in the "Time Zone" dr
 ```
 
 
-## the "___" should be checked
+## the "\_\_\_" should be checked
 ### regex
  regex should match "...checkbox..."
 
