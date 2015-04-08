@@ -1,4 +1,4 @@
-config = require('../../lib/protractor.conf.coffee').config
+config = require('../../src/protractor.conf.coffee').config
 
 config.framework = 'mocha'
 config.specs = '../**/*.spec.coffee'

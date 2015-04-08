@@ -10,7 +10,7 @@ module.exports.config =
       args: ['--test-type']   # Disable the "unsupported flag" prompt. See: https://github.com/angular/protractor/issues/835
 
   cucumberOpts:
-    require: [rek.path 'step_definitions/GeneralStepDefs.coffee']
+    require: [rek.path 'GeneralStepDefs']
     tags: []
     format: 'pretty'
 

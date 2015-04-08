@@ -1,0 +1,9 @@
+.tmp/
+spec/
+src/
+Gruntfile.coffee
+coffeelint.json
+.travis.yml
+
+.idea/
+cukefarm.iml
