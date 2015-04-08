@@ -287,7 +287,7 @@ return expect(browser.refresh.calledOnce).to.equal(true);
 ```
 
 
-## I select "\_\_\_" in the "\_\_\_" drop down list$/
+## I select "\_\_\_" in the "\_\_\_" drop down list
 ### regex
  regex should match 'I select "Mountain Standard" in the "Time Zone" drop down list'
 
