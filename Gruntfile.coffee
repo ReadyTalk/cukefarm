@@ -50,9 +50,9 @@ module.exports = (grunt) ->
         command: "node_modules/grunt-protractor-runner/node_modules/.bin/webdriver-manager update"
       generateApiDocs:
         command: [
-          "node_modules/.bin/docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _"
-          "node_modules/.bin/docha -p '.tmp/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md' -e _"
-          "node_modules/.bin/docha -p '.tmp/transform.spec.js' -o 'docs/transform.md' -e _"
+          "docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _"
+          "docha -p '.tmp/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md' -e _"
+          "docha -p '.tmp/transform.spec.js' -o 'docs/transform.md' -e _"
         ].join '&'
 
     connect:
