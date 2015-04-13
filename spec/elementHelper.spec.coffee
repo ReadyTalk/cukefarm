@@ -20,7 +20,7 @@ describe 'elementHelper', ->
     world = new World(->)
     expect(world.elementHelper).to.be.an.instanceOf ElementHelper
 
-  describe 'hasClass', ->
+  describe 'hasClass()', ->
 
     afterEach ->
       browser.driver.switchTo().defaultContent()

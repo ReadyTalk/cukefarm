@@ -276,7 +276,7 @@ describe 'General Step Defs', ->
         executeStep 'I refresh the page'
         expect(browser.refresh.calledOnce).to.equal true
 
-  describe 'I select "___" in the "___" drop down list$/', ->
+  describe 'I select "___" in the "___" drop down list', ->
 
     describe 'regex', ->
 

@@ -15,6 +15,13 @@ module.exports = (grunt) ->
         dest: 'lib',
         ext: '.js'
         extDot: 'last'
+      compileTests:
+        expand: true,
+        cwd: './spec/',
+        src: ['*.coffee'],
+        dest: '.tmp',
+        ext: '.js'
+        extDot: 'last'
 
     coffeelint:
       options:
@@ -41,6 +48,12 @@ module.exports = (grunt) ->
     shell:
       webdriverManagerUpdate:
         command: "node_modules/grunt-protractor-runner/node_modules/.bin/webdriver-manager update"
+      generateApiDocs:
+        command: [
+          "docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _"
+          "docha -p '.tmp/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md' -e _"
+          "docha -p '.tmp/transform.spec.js' -o 'docs/transform.md' -e _"
+        ].join '&'
 
     connect:
       server:
@@ -58,6 +71,11 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'lint', ['coffeelint']
 
+  grunt.registerTask 'generateApiDocs', [
+    'coffee:compileTests'
+    'shell:generateApiDocs'
+  ]
+
   grunt.registerTask 'test', (target = 'firefox') ->
     return grunt.task.run [
       'coffee:compile'
@@ -71,6 +89,7 @@ module.exports = (grunt) ->
     return grunt.task.run [
       'lint'
       "test:#{target}"
+      'generateApiDocs'
     ]
 
   grunt.registerTask 'default', ['ci:firefox']
