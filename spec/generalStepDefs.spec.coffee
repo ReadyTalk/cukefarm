@@ -92,6 +92,11 @@ describe 'General Step Defs', ->
         executeStep 'I am on the "Test" page'
         expect(stubPage.get.calledOnce).to.equal true
 
+      it 'should provide a clear error message if the Page Object was not added to the PageObjectMap', ->
+        callbackSpy = sinon.spy()
+        executeStep 'I am on the "Missing" page', callbackSpy
+        expect(callbackSpy.getCall(0).args[0].getFailureException()).to.equal "Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?"
+
   describe 'I have a ___x___ screen size', ->
 
     describe 'regex', ->

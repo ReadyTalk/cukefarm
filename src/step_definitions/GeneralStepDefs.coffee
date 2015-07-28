@@ -9,6 +9,8 @@ module.exports = ->
     callback()
 
   @Given /^I (?:am on|go to) the "([^"]*)" page$/, (pageName, callback) ->
+    unless @pageObjectMap[pageName]?
+      return callback "Could not find page with name '#{pageName}' in the PageObjectMap, did you remember to add it?"
     @currentPage = new @pageObjectMap[pageName]
     @currentPage.get().then ->
       callback()
