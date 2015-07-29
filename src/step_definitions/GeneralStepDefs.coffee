@@ -12,7 +12,8 @@ module.exports = ->
     unless @pageObjectMap[pageName]?
       return callback "Could not find page with name '#{pageName}' in the PageObjectMap, did you remember to add it?"
     @currentPage = new @pageObjectMap[pageName]
-    @currentPage.get().then ->
+    @currentPage.get()
+    @currentPage.waitForLoaded().then ->
       callback()
 
   @Given /^I (?:have|change to|resize to|rotate to) a (\d+)x(\d+) screen size$/, (width, height, callback) ->

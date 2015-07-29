@@ -55,6 +55,14 @@ return expect(stubPage.get.calledOnce).to.equal(true);
 ```
 
 
+ execution should call waitForLoaded on the page
+
+```
+executeStep('I am on the "Test" page');
+return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
+```
+
+
  execution should provide a clear error message if the Page Object was not added to the PageObjectMap
 
 ```
