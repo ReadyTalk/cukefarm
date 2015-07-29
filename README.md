@@ -9,7 +9,11 @@ CukeFarm provides a set of Cucumber Steps that can be used to build feature file
 
 # Getting Started
 
-CukeFarm is intended to be used with the [grunt-protractor-runner] plugin. Check out their documentation for help setting up the necessary Grunt tasks.
+To begin, first install Protractor. Follow the instructions in the 'Prerequisites' and 'Setup' sections of the [Protractor Tutorial] to do.
+
+Next, install Cucumber using the following command:
+
+    npm install cucumber --save-dev
 
 # Installation
 
@@ -21,7 +25,7 @@ Install CukeFarm by executing the following command from the root of your projec
 
 ## Config Object
 
-CukeFarm provides a generic Protractor config file that will be passed to grunt-protractor-runner. However, you must provide some additional options that are specific to your project.
+CukeFarm provides a generic Protractor config file. However, you must provide some additional options that are specific to your project.
 
 ### Necessary Options
 
@@ -32,7 +36,6 @@ CukeFarm provides a generic Protractor config file that will be passed to grunt-
     * `capabilities.browserName = <protractor_browser_name>`
 * On the CukeFarm config object, push the path to your project specific World file (See 'World Object' below) onto the `cucumberOpts.require` property
 * Set the CukeFarm config object as the config property on the module exports object
-* Pass `protractor.conf.coffee` as the [configFile option] to your `protractor` Grunt task
 
 Below is a sample `protractor.conf.coffee` file that provides the minimum options necessary to run your tests:
 
@@ -240,6 +243,12 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
       </body>
     </html>
 
+# Running Scenarios
+
+To run your scenarios, simply execute the following command:
+
+    protractor path/to/your/protractor.conf.coffee
+
 # Helper Functions
 
 CukeFarm provides helper functions on the following objects that are defined on the World.
@@ -282,8 +291,7 @@ By default CukeFarm runs unit tests against Firefox. Follow these steps to expli
 [Protractor]:http://angular.github.io/protractor
 [docs]:docs
 [docha]:https://github.com/tehsenaus/docha
-[grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
-[configFile option]:https://github.com/teerapap/grunt-protractor-runner#optionsconfigfile
+[Protractor Tutorial]:https://angular.github.io/protractor/#/tutorial
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule
