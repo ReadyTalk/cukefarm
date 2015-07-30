@@ -69,7 +69,7 @@ return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
 var callbackSpy;
 callbackSpy = sinon.spy();
 executeStep('I am on the "Missing" page', callbackSpy);
-return expect(callbackSpy.getCall(0).args[0].getFailureException()).to.equal("Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
+return expect(callbackSpy.getCall(0).args[0].getFailureException().toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
 ```
 
 
