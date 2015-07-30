@@ -10,7 +10,6 @@
   "dependencies": {
     "chai": "^1.9.1",
     "chai-as-promised": "^4.1.1",
-    "cucumber": "^0.4.3",
     "q": "^1.0.1",
     "rekuire": "^0.1.5"
   },
@@ -18,6 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "^1.9.1",
+    "cucumber": "^0.5.0",
     "docha": "thompsnm/docha#36f8d21",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
@@ -33,6 +33,9 @@
     "sinon": "^1.10.3",
     "sinon-as-promised": "^1.2.0",
     "time-grunt": "^1.0.0"
+  },
+  "peerDependencies": {
+    "cucumber": "^0.5.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
   "keywords": [
