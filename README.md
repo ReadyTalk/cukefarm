@@ -96,7 +96,7 @@ Note: The above sample works, but it requires you to update the map every time y
 * Set the pageObjectMap property of the CukeFarm World _prototype_ to your Page Object Map
     * You must set this on the prototype because Cucumber.js actually instantiates the World itself using a Constructor function
 * Set the CukeFarm World object as the World property on the module exports object
-* In any Step Definition file that needs access to the World, include the line `@World = require('path/to/your/World').World`
+* In any Step Definition file that needs access to the World, include the line `this.World = require('path/to/your/World').World`
 
 Below is a sample `World.js` file:
 
@@ -141,18 +141,21 @@ Adhering to the following conventions will allow you to use the `stringToVariabl
 
 Each Page Object is expected to have a `waitForLoaded` function that returns a promise. The promise should only resolve if the page successfully loads. A typical `waitForLoaded` function will look something like this:
 
-    waitForLoaded: ->
-      browser.wait =>
-        @barField.isPresent()
-      ,
-        1000
+    this.waitForLoaded = function() {
+      return browser.wait((function(_this) {
+        return function() {
+          return _this.barField.isPresent();
+        };
+      })(this), 1000);
+    };
 
 ### `get` Function
 
 To provide easy access for the 'Given I am on the "<something>" page' step to reach your page, your page object should contain a `get` function that somehow navigates to your page. A typical `get` function will look something like this:
 
-    get: ->
-        browser.get 'search'
+    this.get = function() {
+      return browser.get('search');
+    };
 
 ### Export the class
 
