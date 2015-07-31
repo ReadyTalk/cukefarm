@@ -29,7 +29,7 @@ CukeFarm provides a generic Protractor config file. However, you must provide so
 
 ### Necessary Options
 
-* Create file called `protractor.conf.coffee`
+* Create file called `protractor.conf.js`
 * Use the `require` function to import CukeFarm
 * On the CukeFarm config object, create the following properties:
     * `specs = <path_to_your_feature_files>`
@@ -37,25 +37,28 @@ CukeFarm provides a generic Protractor config file. However, you must provide so
 * On the CukeFarm config object, push the path to your project specific World file (See 'World Object' below) onto the `cucumberOpts.require` property
 * Set the CukeFarm config object as the config property on the module exports object
 
-Below is a sample `protractor.conf.coffee` file that provides the minimum options necessary to run your tests:
+Below is a sample `protractor.conf.js` file that provides the minimum options necessary to run your tests:
 
-    # protractor.conf.coffee
+    # protractor.conf.js
 
-    config = require('cukefarm').config
+    var config = require('cukefarm').config;
 
-    config.specs = 'features/**/*.feature'
-    config.capabilities.browserName = 'chrome'
-    config.cucumberOpts.require.push './support/World.coffee'
+    config.specs = '../features/**/*.feature';
+    config.capabilities.browserName = 'chrome';
+    config.cucumberOpts.require.push('../support/World.js');
 
-    exports.config = config
+    exports.config = config;
 
 ### Adding Step Definitions
 
 CukeFarm provides a set of general Step Definitions, but you will likely need to add more that are specific to your project. Simply push the path of your Step Definition files onto the CukeFarm config's `cucumberOpts.require` property:
 
-    # protractor.conf.coffee
+    # protractor.conf.js
 
-    config.cucumberOpts.require.push req for req in ['./support/World.coffee', './step_definitions/**/*.coffee']
+    files = ['./support/World.js', './step_definitions/**/*.js'];
+    for (i = 0; i < files.length; i++) {
+      config.cucumberOpts.require.push(files[i]);
+    }
 
 ### Additional Options
 
@@ -75,18 +78,19 @@ A Page Object Map will map the Page Objects that you create to human language St
 
 Here is a sample Page Object Map:
 
-    # PageObjectMap.coffee
+    # PageObjectMap.js
 
-    module.exports =
-      "Page One"   : require('./pages/PageOne')
-      "Page Two"   : require('./pages/PageTwo')
+    module.exports = {
+      "Page One"   : require('./pages/PageOne'),
+      "Page Two"   : require('./pages/PageTwo'),
       "Page Three" : require('./pages/PageThree')
+    };
 
 Note: The above sample works, but it requires you to update the map every time you add or remove a Page Object. If you instead define your Page Objects using our Best Practices, you can dynamically create the Page Object Map.
 
 ### Adding a Page Object Map to the World
 
-* Create a file called `World.coffee`
+* Create a file called `World.js`
 * Use the `require` function to import CukeFarm
 * Use the `require` function to import your Page Object Map
 * Set the pageObjectMap property of the CukeFarm World _prototype_ to your Page Object Map
@@ -94,15 +98,15 @@ Note: The above sample works, but it requires you to update the map every time y
 * Set the CukeFarm World object as the World property on the module exports object
 * In any Step Definition file that needs access to the World, include the line `@World = require('path/to/your/World').World`
 
-Below is a sample `World.coffee` file:
+Below is a sample `World.js` file:
 
-    # World.coffee
+    # World.js
 
-    World = require('cukefarm').World
+    var World = require('cukefarm').World;
 
-    World::pageObjectMap = require('./PageObjectMap')
+    World.prototype.pageObjectMap = require('./PageObjectMap');
 
-    module.exports.World = World
+    module.exports.World = World;
 
 ### Why use a Page Object Map?
 
@@ -173,56 +177,70 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
         And the "Showing Results For Field" should contain the text "Foo"
 
 
-    # PageObjectMap.coffee
+    # PageObjectMap.js
 
-    globule = require 'globule'
-    path = require 'path'
+    var file, files, globule, i, len, page, path;
 
-    files = globule.find 'e2e/pages/**/*.coffee'
-    for file in files
-      page = require path.resolve(file)
-      module.exports[page.name] = page.class
+    globule = require('globule');
+    path = require('path');
+
+    files = globule.find('e2e/pages/**/*.js');
+
+    for (i = 0; i < files.length; i++) {
+      page = require(path.resolve(files[i]));
+      module.exports[page.name] = page["class"];
+    }
 
 
-    # SearchPage.coffee
+    # SearchPage.js
 
-    class SearchPage
+    var SearchPage = function SearchPage() {
 
-      searchField: $ 'input.search-field'
-      searchButton: $ 'button.search-button'
+      this.searchField = $('input.search-field');
+      this.searchButton = $('button.search-button');
 
-      get: ->
-        browser.get 'search'
+      this.get = function() {
+        return browser.get('search');
+      };
 
-      waitForLoaded: ->
-        browser.wait =>
-          @searchButton.isPresent()
-        ,
-          30000
+      this.waitForLoaded = function() {
+        return browser.wait((function(_this) {
+          return function() {
+            return _this.searchButton.isPresent();
+          };
+        })(this), 30000);
+      };
+    }
 
-    module.exports =
-      class: SearchPage
+    module.exports = {
+      "class": SearchPage,
       name: 'Search'
+    };
 
 
-    # ResultsPage.coffee
+    # ResultsPage.js
 
-    class ResultsPage
+    var ResultsPage = function ResultsPage() {
 
-      showingResultsForField: $ 'span.results-for'
+      this.showingResultsForField = $('span.results-for');
 
-      get: ->
-        browser.get 'results'
+      this.get = function() {
+        return browser.get('results');
+      };
 
-      waitForLoaded: ->
-        browser.wait =>
-          @showingResultsForField.isPresent()
-        ,
-          30000
+      this.waitForLoaded = function() {
+        return browser.wait((function(_this) {
+          return function() {
+            return _this.showingResultsForField.isPresent();
+          };
+        })(this), 30000);
+      };
+    }
 
-    module.exports =
-      class: ResultsPage
+    module.exports = {
+      "class": ResultsPage,
       name: 'Results'
+    };
 
 
     # Search.html
@@ -247,7 +265,7 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
 
 To run your scenarios, simply execute the following command:
 
-    protractor path/to/your/protractor.conf.coffee
+    protractor path/to/your/protractor.conf.js
 
 # Helper Functions
 
