@@ -3,23 +3,17 @@ CukeFarm
 
 An opinionated template for writing Cucumber tests with Protractor.
 
-CukeFarm provides a set of Cucumber Steps that can be used to build feature files that are backed by automation using the [Protractor] framework. It also provides a set of helper functions that can be used when writing your own Step Definitions. Check out the [docs] directory for a full list of the Steps and helper functions. The docs are automatically generated using [docha].
+CukeFarm provides a set of [Cucumber] Steps that can be used to build feature files that are backed by automation using the [Protractor] framework. It also provides a set of helper functions that can be used when writing your own Step Definitions. Check out the [docs] directory for a full list of the Steps and helper functions. The docs are automatically generated using [docha].
 
 [![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=master)](https://travis-ci.org/ReadyTalk/cukefarm)
-
-# Getting Started
-
-To begin, first install Protractor. Follow the instructions in the 'Prerequisites' and 'Setup' sections of the [Protractor Tutorial] to do.
-
-Next, install Cucumber using the following command:
-
-    npm install cucumber --save-dev
 
 # Installation
 
 Install CukeFarm by executing the following command from the root of your project:
 
     npm install cukefarm --save-dev
+
+This will also install Protractor and Cucumber in your project if you don't have them already.
 
 # Set Up
 
@@ -247,7 +241,7 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
 
 To run your scenarios, simply execute the following command:
 
-    protractor path/to/your/protractor.conf.coffee
+    ./node_modules/protractor/bin/protractor path/to/your/protractor.conf.coffee
 
 # Helper Functions
 
@@ -288,6 +282,7 @@ By default CukeFarm runs unit tests against Firefox. Follow these steps to expli
 * Run `npm install` to download dependencies.
 * Run `npm run-script test-<browser>` where `<browser>` is either `firefox` or `chrome`
 
+[Cucumber]:https://www.npmjs.com/package/cucumber
 [Protractor]:http://angular.github.io/protractor
 [docs]:docs
 [docha]:https://github.com/tehsenaus/docha
