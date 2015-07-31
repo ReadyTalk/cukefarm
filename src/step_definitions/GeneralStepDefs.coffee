@@ -34,8 +34,9 @@ module.exports = ->
     browser.refresh()
 
   @When /^I select "([^"]*)" in the "([^"]*)" drop down list$/, (optionText, list) ->
-    @currentPage[@transform.stringToVariableName(list + 'Select')].then (select) ->
-      select.element(protractor.By.cssContainingText('option', optionText)).click()
+    @currentPage[@transform.stringToVariableName(list + 'Select')]
+    .element(protractor.By.cssContainingText('option', optionText))
+    .click()
 
   @Then /^the title should equal "([^"]*)"$/, (text) ->
     @expect(browser.getTitle()).to.eventually.equal text
@@ -65,10 +66,9 @@ module.exports = ->
 
   @Then /^"([^"]*)" should appear in the "([^"]*)" drop down list$/, (option, list) ->
     @list = @currentPage[@transform.stringToVariableName(list + 'Select')]
-    optionsPromise = @list.all(By.tagName 'option').then (elements) =>
-      options = (element.getText() for element in elements)
-      @Q.all(options)
-    @expect(optionsPromise).to.eventually.contain option
+    optionsText = @list.all(By.tagName 'option').map (element, index) ->
+      return element.getText()
+    @expect(optionsText).to.eventually.contain option
 
   @Then /^the "([^"]*)" (should|should not) be displayed$/, (el, shouldBeDisplayed) ->
     @shouldBeDisplayed = @transform.shouldToBoolean shouldBeDisplayed
