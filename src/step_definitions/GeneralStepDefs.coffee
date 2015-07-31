@@ -5,8 +5,7 @@ module.exports = ->
   # No-op step
   # Use this step to provide documentation within a scenario of steps that should be occuring but that won't be
   #   implemented at the E2E level since they are already covered at a lower level.
-  @Given /^.*\(covered by .*\)$/, (callback) ->
-    callback()
+  @Given /^.*\(covered by .*\)$/, () ->
 
   @Given /^I (?:am on|go to) the "([^"]*)" page$/, (pageName) ->
     unless @pageObjectMap[pageName]?
@@ -15,32 +14,28 @@ module.exports = ->
     @currentPage.get()
     @currentPage.waitForLoaded()
 
-  @Given /^I (?:have|change to|resize to|rotate to) a (\d+)x(\d+) screen size$/, (width, height, callback) ->
+  @Given /^I (?:have|change to|resize to|rotate to) a (\d+)x(\d+) screen size$/, (width, height) ->
     browser.manage().window().setSize parseInt(width, 10), parseInt(height, 10)
-    callback()
 
-  @When /^I (?:navigate|click) (?:backwards|back) in my browser$/, (callback) ->
+  @When /^I (?:navigate|click) (?:backwards|back) in my browser$/, () ->
     browser.navigate().back()
-    callback()
 
-  @When /^I type "([^"]*)" in(?:to)? the "([^"]*)" field$/, (text, fieldName, callback) ->
+  @When /^I type "([^"]*)" in(?:to)? the "([^"]*)" field$/, (text, fieldName) ->
     field = @transform.stringToVariableName(fieldName + 'Field')
     @currentPage[field].clear()
-    @currentPage[field].sendKeys(text).then ->
-      callback()
+    @currentPage[field].sendKeys(text)
 
-  @When /^I click the "([^"]*)"(?: )?(link|button|drop down list|tab|)$/, (elementName, elementType,  callback) ->
+  @When /^I click the "([^"]*)"(?: )?(link|button|drop down list|tab|)$/, (elementName, elementType) ->
     elementType = @transform.elementTypeToVariableName(elementType)
     element = @transform.stringToVariableName(elementName + elementType)
     @currentPage[element].click()
-    callback()
 
   @When /^I refresh the page$/, () ->
     browser.refresh()
 
-  @When /^I select "([^"]*)" in the "([^"]*)" drop down list$/, (optionText, list, callback) ->
+  @When /^I select "([^"]*)" in the "([^"]*)" drop down list$/, (optionText, list) ->
     @currentPage[@transform.stringToVariableName(list + 'Select')].then (select) ->
-      select.element(protractor.By.cssContainingText('option', optionText)).click().then callback
+      select.element(protractor.By.cssContainingText('option', optionText)).click()
 
   @Then /^the title should equal "([^"]*)"$/, (text) ->
     @expect(browser.getTitle()).to.eventually.equal text
