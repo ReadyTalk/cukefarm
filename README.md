@@ -7,13 +7,19 @@ CukeFarm provides a set of [Cucumber] Steps that can be used to build feature fi
 
 [![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=master)](https://travis-ci.org/ReadyTalk/cukefarm)
 
+# Getting Started
+
+To begin, install Protractor. Follow the instructions in the 'Prerequisites' and 'Setup' sections of the [Protractor Tutorial].
+
+Next, install Cucumber using the following command:
+
+    npm install cucumber --save-dev
+
 # Installation
 
 Install CukeFarm by executing the following command from the root of your project:
 
     npm install cukefarm --save-dev
-
-This will also install Protractor and Cucumber in your project if you don't have them already.
 
 # Set Up
 
@@ -241,7 +247,7 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
 
 To run your scenarios, simply execute the following command:
 
-    ./node_modules/protractor/bin/protractor path/to/your/protractor.conf.coffee
+    protractor path/to/your/protractor.conf.coffee
 
 # Helper Functions
 
