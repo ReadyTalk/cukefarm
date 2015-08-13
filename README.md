@@ -3,13 +3,17 @@ CukeFarm
 
 An opinionated template for writing Cucumber tests with Protractor.
 
-CukeFarm provides a set of Cucumber Steps that can be used to build feature files that are backed by automation using the [Protractor] framework. It also provides a set of helper functions that can be used when writing your own Step Definitions. Check out the [docs] directory for a full list of the Steps and helper functions. The docs are automatically generated using [docha].
+CukeFarm provides a set of [Cucumber] Steps that can be used to build feature files that are backed by automation using the [Protractor] framework. It also provides a set of helper functions that can be used when writing your own Step Definitions. Check out the [docs] directory for a full list of the Steps and helper functions. The docs are automatically generated using [docha].
 
 [![Build Status](https://travis-ci.org/ReadyTalk/cukefarm.svg?branch=master)](https://travis-ci.org/ReadyTalk/cukefarm)
 
 # Getting Started
 
-CukeFarm is intended to be used with the [grunt-protractor-runner] plugin. Check out their documentation for help setting up the necessary Grunt tasks.
+To begin, install Protractor. Follow the instructions in the 'Prerequisites' and 'Setup' sections of the [Protractor Tutorial].
+
+Next, install Cucumber using the following command:
+
+    npm install cucumber --save-dev
 
 # Installation
 
@@ -21,38 +25,40 @@ Install CukeFarm by executing the following command from the root of your projec
 
 ## Config Object
 
-CukeFarm provides a generic Protractor config file that will be passed to grunt-protractor-runner. However, you must provide some additional options that are specific to your project.
+CukeFarm provides a generic Protractor config file. However, you must provide some additional options that are specific to your project.
 
 ### Necessary Options
 
-* Create file called `protractor.conf.coffee`
+* Create file called `protractor.conf.js`
 * Use the `require` function to import CukeFarm
 * On the CukeFarm config object, create the following properties:
     * `specs = <path_to_your_feature_files>`
     * `capabilities.browserName = <protractor_browser_name>`
 * On the CukeFarm config object, push the path to your project specific World file (See 'World Object' below) onto the `cucumberOpts.require` property
 * Set the CukeFarm config object as the config property on the module exports object
-* Pass `protractor.conf.coffee` as the [configFile option] to your `protractor` Grunt task
 
-Below is a sample `protractor.conf.coffee` file that provides the minimum options necessary to run your tests:
+Below is a sample `protractor.conf.js` file that provides the minimum options necessary to run your tests:
 
-    # protractor.conf.coffee
+    # protractor.conf.js
 
-    config = require('cukefarm').config
+    var config = require('cukefarm').config;
 
-    config.specs = 'features/**/*.feature'
-    config.capabilities.browserName = 'chrome'
-    config.cucumberOpts.require.push './support/World.coffee'
+    config.specs = '../features/**/*.feature';
+    config.capabilities.browserName = 'chrome';
+    config.cucumberOpts.require.push('../support/World.js');
 
-    exports.config = config
+    exports.config = config;
 
 ### Adding Step Definitions
 
 CukeFarm provides a set of general Step Definitions, but you will likely need to add more that are specific to your project. Simply push the path of your Step Definition files onto the CukeFarm config's `cucumberOpts.require` property:
 
-    # protractor.conf.coffee
+    # protractor.conf.js
 
-    config.cucumberOpts.require.push req for req in ['./support/World.coffee', './step_definitions/**/*.coffee']
+    files = ['./support/World.js', './step_definitions/**/*.js'];
+    for (i = 0; i < files.length; i++) {
+      config.cucumberOpts.require.push(files[i]);
+    }
 
 ### Additional Options
 
@@ -72,34 +78,35 @@ A Page Object Map will map the Page Objects that you create to human language St
 
 Here is a sample Page Object Map:
 
-    # PageObjectMap.coffee
+    # PageObjectMap.js
 
-    module.exports =
-      "Page One"   : require('./pages/PageOne')
-      "Page Two"   : require('./pages/PageTwo')
+    module.exports = {
+      "Page One"   : require('./pages/PageOne'),
+      "Page Two"   : require('./pages/PageTwo'),
       "Page Three" : require('./pages/PageThree')
+    };
 
 Note: The above sample works, but it requires you to update the map every time you add or remove a Page Object. If you instead define your Page Objects using our Best Practices, you can dynamically create the Page Object Map.
 
 ### Adding a Page Object Map to the World
 
-* Create a file called `World.coffee`
+* Create a file called `World.js`
 * Use the `require` function to import CukeFarm
 * Use the `require` function to import your Page Object Map
 * Set the pageObjectMap property of the CukeFarm World _prototype_ to your Page Object Map
     * You must set this on the prototype because Cucumber.js actually instantiates the World itself using a Constructor function
 * Set the CukeFarm World object as the World property on the module exports object
-* In any Step Definition file that needs access to the World, include the line `@World = require('path/to/your/World').World`
+* In any Step Definition file that needs access to the World, include the line `this.World = require('path/to/your/World').World`
 
-Below is a sample `World.coffee` file:
+Below is a sample `World.js` file:
 
-    # World.coffee
+    # World.js
 
-    World = require('cukefarm').World
+    var World = require('cukefarm').World;
 
-    World::pageObjectMap = require('./PageObjectMap')
+    World.prototype.pageObjectMap = require('./PageObjectMap');
 
-    module.exports.World = World
+    module.exports.World = World;
 
 ### Why use a Page Object Map?
 
@@ -134,18 +141,21 @@ Adhering to the following conventions will allow you to use the `stringToVariabl
 
 Each Page Object is expected to have a `waitForLoaded` function that returns a promise. The promise should only resolve if the page successfully loads. A typical `waitForLoaded` function will look something like this:
 
-    waitForLoaded: ->
-      browser.wait =>
-        @barField.isPresent()
-      ,
-        1000
+    this.waitForLoaded = function() {
+      return browser.wait((function(_this) {
+        return function() {
+          return _this.barField.isPresent();
+        };
+      })(this), 1000);
+    };
 
 ### `get` Function
 
 To provide easy access for the 'Given I am on the "<something>" page' step to reach your page, your page object should contain a `get` function that somehow navigates to your page. A typical `get` function will look something like this:
 
-    get: ->
-        browser.get 'search'
+    this.get = function() {
+      return browser.get('search');
+    };
 
 ### Export the class
 
@@ -170,56 +180,70 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
         And the "Showing Results For Field" should contain the text "Foo"
 
 
-    # PageObjectMap.coffee
+    # PageObjectMap.js
 
-    globule = require 'globule'
-    path = require 'path'
+    var file, files, globule, i, len, page, path;
 
-    files = globule.find 'e2e/pages/**/*.coffee'
-    for file in files
-      page = require path.resolve(file)
-      module.exports[page.name] = page.class
+    globule = require('globule');
+    path = require('path');
+
+    files = globule.find('e2e/pages/**/*.js');
+
+    for (i = 0; i < files.length; i++) {
+      page = require(path.resolve(files[i]));
+      module.exports[page.name] = page["class"];
+    }
 
 
-    # SearchPage.coffee
+    # SearchPage.js
 
-    class SearchPage
+    var SearchPage = function SearchPage() {
 
-      searchField: $ 'input.search-field'
-      searchButton: $ 'button.search-button'
+      this.searchField = $('input.search-field');
+      this.searchButton = $('button.search-button');
 
-      get: ->
-        browser.get 'search'
+      this.get = function() {
+        return browser.get('search');
+      };
 
-      waitForLoaded: ->
-        browser.wait =>
-          @searchButton.isPresent()
-        ,
-          30000
+      this.waitForLoaded = function() {
+        return browser.wait((function(_this) {
+          return function() {
+            return _this.searchButton.isPresent();
+          };
+        })(this), 30000);
+      };
+    }
 
-    module.exports =
-      class: SearchPage
+    module.exports = {
+      "class": SearchPage,
       name: 'Search'
+    };
 
 
-    # ResultsPage.coffee
+    # ResultsPage.js
 
-    class ResultsPage
+    var ResultsPage = function ResultsPage() {
 
-      showingResultsForField: $ 'span.results-for'
+      this.showingResultsForField = $('span.results-for');
 
-      get: ->
-        browser.get 'results'
+      this.get = function() {
+        return browser.get('results');
+      };
 
-      waitForLoaded: ->
-        browser.wait =>
-          @showingResultsForField.isPresent()
-        ,
-          30000
+      this.waitForLoaded = function() {
+        return browser.wait((function(_this) {
+          return function() {
+            return _this.showingResultsForField.isPresent();
+          };
+        })(this), 30000);
+      };
+    }
 
-    module.exports =
-      class: ResultsPage
+    module.exports = {
+      "class": ResultsPage,
       name: 'Results'
+    };
 
 
     # Search.html
@@ -239,6 +263,12 @@ Below is the example Scenario from above along with the Page Objects and Page Ob
         <span class="results-for">Showing results for Foo</span>
       </body>
     </html>
+
+# Running Scenarios
+
+To run your scenarios, simply execute the following command:
+
+    protractor path/to/your/protractor.conf.js
 
 # Helper Functions
 
@@ -279,11 +309,11 @@ By default CukeFarm runs unit tests against Firefox. Follow these steps to expli
 * Run `npm install` to download dependencies.
 * Run `npm run-script test-<browser>` where `<browser>` is either `firefox` or `chrome`
 
+[Cucumber]:https://www.npmjs.com/package/cucumber
 [Protractor]:http://angular.github.io/protractor
 [docs]:docs
 [docha]:https://github.com/tehsenaus/docha
-[grunt-protractor-runner]:https://github.com/teerapap/grunt-protractor-runner
-[configFile option]:https://github.com/teerapap/grunt-protractor-runner#optionsconfigfile
+[Protractor Tutorial]:https://angular.github.io/protractor/#/tutorial
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule

@@ -55,6 +55,24 @@ return expect(stubPage.get.calledOnce).to.equal(true);
 ```
 
 
+ execution should call waitForLoaded on the page
+
+```
+executeStep('I am on the "Test" page');
+return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
+```
+
+
+ execution should provide a clear error message if the Page Object was not added to the PageObjectMap
+
+```
+var callbackSpy;
+callbackSpy = sinon.spy();
+executeStep('I am on the "Missing" page', callbackSpy);
+return expect(callbackSpy.getCall(0).args[0].getFailureException().toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
+```
+
+
 ## I have a \_\_\_x\_\_\_ screen size
 ### regex
  regex should match "I have..."

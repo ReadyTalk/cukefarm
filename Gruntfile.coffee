@@ -55,19 +55,12 @@ module.exports = (grunt) ->
           "docha -p '.tmp/transform.spec.js' -o 'docs/transform.md' -e _"
         ].join '&'
 
-    connect:
+    express:
       server:
         options:
           port: 9001,
-          base: 'spec/test_app'
-
-    requirejs:
-      compile:
-        options:
-          baseUrl: "spec/test_app/scripts"
-          mainConfigFile: "spec/test_app/scripts/app.js"
-          include: ["app"]
-          out: "spec/test_app/scripts/main.js"
+          bases: ['spec/test_app', 'node_modules/js-fixtures']
+          livereload: true
 
   grunt.registerTask 'lint', ['coffeelint']
 
@@ -79,9 +72,8 @@ module.exports = (grunt) ->
   grunt.registerTask 'test', (target = 'firefox') ->
     return grunt.task.run [
       'coffee:compile'
-      'requirejs:compile'
       'shell:webdriverManagerUpdate'
-      'connect:server'
+      'express:server'
       "protractor:#{target}"
     ]
 
