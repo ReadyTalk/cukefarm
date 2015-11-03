@@ -34,7 +34,7 @@
     "time-grunt": "^1.0.0"
   },
   "peerDependencies": {
-    "cucumber": "^0.8.0"
+    "cucumber": ">= 0.5 < 1"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
   "keywords": [
