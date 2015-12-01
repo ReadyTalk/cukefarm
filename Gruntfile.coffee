@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   require('time-grunt') grunt
   require('jit-grunt') grunt,
-    protractor: 'grunt-protractor-runner'
+    protractor: 'grunt-protractor3-runner'
     connect: 'grunt-contrib-connect'
     coffee: 'grunt-contrib-coffee'
 
@@ -47,7 +47,7 @@ module.exports = (grunt) ->
 
     shell:
       webdriverManagerUpdate:
-        command: "node_modules/grunt-protractor-runner/node_modules/.bin/webdriver-manager update"
+        command: "node_modules/grunt-protractor3-runner/node_modules/.bin/webdriver-manager update"
       generateApiDocs:
         command: [
           "docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _"
