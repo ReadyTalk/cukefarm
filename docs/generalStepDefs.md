@@ -354,7 +354,7 @@ return verifyStepCaptures('the title should equal "My Title"', 'My Title');
 
 ```
 return executeStep('the title should equal "Protractor Integration Test Page"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -363,7 +363,7 @@ return executeStep('the title should equal "Protractor Integration Test Page"', 
 
 ```
 return executeStep('the title should equal "Fake Title"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -397,7 +397,7 @@ return verifyStepCaptures('the "Inactive Field" should not be active', 'Inactive
 
 ```
 return executeStep('the "Button" should be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -406,7 +406,7 @@ return executeStep('the "Button" should be active', function(stepResult) {
 
 ```
 return executeStep('the "Button" should not be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -416,7 +416,7 @@ return executeStep('the "Button" should not be active', function(stepResult) {
 
 ```
 return executeStep('the "Button" should be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -425,7 +425,7 @@ return executeStep('the "Button" should be active', function(stepResult) {
 
 ```
 return executeStep('the "Button" should not be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -452,7 +452,7 @@ return verifyStepCaptures('the "Home Button" should be present', 'Home Button');
 
 ```
 return executeStep('the "Button" should be present', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -462,7 +462,7 @@ return executeStep('the "Button" should be present', function(stepResult) {
 
 ```
 return executeStep('the "Button" should be present', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -571,7 +571,7 @@ return verifyStepDoesNotCapture('the "Field" should contain the text "Text Strin
 
 ```
 return executeStep('the "Test Span" should contain the text "Span Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -580,7 +580,7 @@ return executeStep('the "Test Span" should contain the text "Span Text"', functi
 
 ```
 return executeStep('the "Test Span" should contain the text "Fake Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -591,7 +591,7 @@ return executeStep('the "Test Span" should contain the text "Fake Text"', functi
 ```
 world.currentPage.testInput.sendKeys("Input Text");
 return executeStep('the "Test Input" should contain the text "Input Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -600,7 +600,7 @@ return executeStep('the "Test Input" should contain the text "Input Text"', func
 
 ```
 return executeStep('the "Test Input" should contain the text "Input Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -626,7 +626,7 @@ return verifyStepCaptures('"Mountain Time" should appear in the "Time Zone" drop
 
 ```
 return executeStep('"Mountain Standard" should appear in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -635,7 +635,7 @@ return executeStep('"Mountain Standard" should appear in the "Time Zone" drop do
 
 ```
 return executeStep('"Pacific Standard" should appear in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -669,7 +669,7 @@ return verifyStepCaptures('the "Cancel Button" should not be displayed', 'Cancel
 
 ```
 return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -678,7 +678,7 @@ return executeStep('the "Test Span" should be displayed', function(stepResult) {
 
 ```
 return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -688,7 +688,7 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
 
 ```
 return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -697,7 +697,7 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
 
 ```
 return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -707,7 +707,7 @@ return executeStep('the "Test Span" should be displayed', function(stepResult) {
 
 ```
 return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -716,7 +716,7 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
 
 ```
 return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -770,7 +770,7 @@ return verifyStepDoesNotCapture('the "Username Field" should have the placeholde
 
 ```
 return executeStep('the "Test Input" should have the placeholder text "Test Placeholder"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -779,7 +779,7 @@ return executeStep('the "Test Input" should have the placeholder text "Test Plac
 
 ```
 return executeStep('the "Test Input" should have the placeholder text "Fake Placeholder"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -848,7 +848,7 @@ return verifyStepDoesNotCapture('the "Save Configuration" button should be enabl
 
 ```
 return executeStep('the "Test" button should be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -857,7 +857,7 @@ return executeStep('the "Test" button should be enabled', function(stepResult) {
 
 ```
 return executeStep('the "Test" button should not be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -867,7 +867,7 @@ return executeStep('the "Test" button should not be enabled', function(stepResul
 
 ```
 return executeStep('the "Test" button should be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -876,7 +876,7 @@ return executeStep('the "Test" button should be enabled', function(stepResult) {
 
 ```
 return executeStep('the "Test" button should not be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -916,7 +916,7 @@ return verifyStepDoesNotCapture('"Mountain Standard" should be selected in the "
 
 ```
 return executeStep('"Eastern Standard" should be selected in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -925,7 +925,7 @@ return executeStep('"Eastern Standard" should be selected in the "Time Zone" dro
 
 ```
 return executeStep('"Mountain Standard" should be selected in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -966,7 +966,7 @@ return verifyStepMatch('the "Enable Emails" checkbox should not be checked');
 
 ```
 return executeStep('the "Test" checkbox should be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```
 
@@ -975,7 +975,7 @@ return executeStep('the "Test" checkbox should be checked', function(stepResult)
 
 ```
 return executeStep('the "Test" checkbox should not be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -985,7 +985,7 @@ return executeStep('the "Test" checkbox should not be checked', function(stepRes
 
 ```
 return executeStep('the "Test" checkbox should be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+  return expect(stepResult.isFailed()).to.equal(true);
 });
 ```
 
@@ -994,6 +994,6 @@ return executeStep('the "Test" checkbox should be checked', function(stepResult)
 
 ```
 return executeStep('the "Test" checkbox should not be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+  return expect(stepResult.isSuccessful()).to.equal(true);
 });
 ```

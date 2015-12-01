@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "^1.9.1",
-    "cucumber": "^0.8.0",
+    "cucumber": "^0.5.0",
     "docha": "^0.1.2",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
