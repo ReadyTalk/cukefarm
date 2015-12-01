@@ -10,8 +10,16 @@ sinonAsPromised = require('sinon-as-promised')(Promise)
 describe 'General Step Defs', ->
 
   supportCodeFilePaths = [rek.path 'GeneralStepDefs']
-  supportCodeLibrary = Cucumber.Cli.SupportCodeLoader(supportCodeFilePaths, []).getSupportCodeLibrary();
-  ast_tree_walker = new Cucumber.Runtime.AstTreeWalker({}, supportCodeLibrary, {})
+  supportCodeLibrary = Cucumber.Cli.SupportCodeLoader(supportCodeFilePaths, []).getSupportCodeLibrary()
+  required_options = { strict: false, failFast: false, dryRun: false }
+  required_listener = [Cucumber.Listener()]
+
+  currentStepResult = {}
+  supportCodeLibrary.registerHandler 'StepResult', (event, callback) ->
+    currentStepResult = event.getPayloadItem 'stepResult'
+    callback()
+
+  ast_tree_walker = new Cucumber.Runtime.AstTreeWalker({}, supportCodeLibrary, required_listener, required_options)
 
   scenario =
     getAttachments: ->
@@ -19,26 +27,34 @@ describe 'General Step Defs', ->
 
   stepPattern = ''
 
-  executeStep = (name, callback = (->), keyword = 'Given') =>
-    step = new Cucumber.Ast.Step(keyword, name, '', '')
-    step.execute ast_tree_walker, callback
+  lookupStepDefinition = (stepName) ->
+    stepDefs = supportCodeLibrary.lookupStepDefinitionsByName stepName
+    expect(stepDefs[0]).to.exist
+    stepDefs[0]
 
-  verifyStepMatch = (name, pattern = stepPattern) ->
-    stepDef = ast_tree_walker.lookupStepDefinitionByName name
-    expect(stepDef).to.exist
+  executeStep = (stepName, callback = (->), keyword = 'Given') =>
+    step = new Cucumber.Ast.Step(keyword, stepName, '', '')
+    stepDef = lookupStepDefinition stepName
+    ast_tree_walker.executeStep step, stepDef, callback
+
+  verifyStepMatch = (stepName, pattern = stepPattern) ->
+    stepDef = lookupStepDefinition stepName
     expect(stepDef.getPatternRegexp().toString()).to.equal pattern
 
   verifyStepCaptures = (stepName, args...) ->
-    stepDef = ast_tree_walker.lookupStepDefinitionByName stepName
+    stepDef = lookupStepDefinition stepName
     expect(stepDef.getPatternRegexp().exec stepName).to.contain arg for arg in args
 
   verifyStepDoesNotCapture = (stepName, args...) ->
-    stepDef = ast_tree_walker.lookupStepDefinitionByName stepName
+    stepDef = lookupStepDefinition stepName
     expect(stepDef.getPatternRegexp().exec stepName).to.not.contain arg for arg in args
 
   before ->
     browser.get 'http://localhost:9001/'
     browser.manage().timeouts().implicitlyWait 100
+
+  beforeEach ->
+    currentStepResult = {}
 
   describe '___ (covered by ___)', ->
 
@@ -86,21 +102,20 @@ describe 'General Step Defs', ->
         ast_tree_walker.setWorld world
 
       it 'should set the currentPage on the World', ->
-        executeStep 'I am on the "Test" page'
-        expect(world.currentPage).to.equal stubPage
+        executeStep 'I am on the "Test" page', ->
+          expect(world.currentPage).to.equal stubPage
 
       it 'should call get on the page', ->
-        executeStep 'I am on the "Test" page'
-        expect(stubPage.get.calledOnce).to.equal true
+        executeStep 'I am on the "Test" page', ->
+          expect(stubPage.get.calledOnce).to.equal true
 
       it 'should call waitForLoaded on the page', ->
-        executeStep 'I am on the "Test" page'
-        expect(stubPage.waitForLoaded.calledOnce).to.equal true
+        executeStep 'I am on the "Test" page', ->
+          expect(stubPage.waitForLoaded.calledOnce).to.equal true
 
       it 'should provide a clear error message if the Page Object was not added to the PageObjectMap', ->
-        callbackSpy = sinon.spy()
-        executeStep 'I am on the "Missing" page', callbackSpy
-        expect(callbackSpy.getCall(0).args[0].getFailureException().toString()).to.equal "Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?"
+        executeStep 'I am on the "Missing" page', ->
+          expect(currentStepResult.getFailureException().toString()).to.equal "Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?"
 
   describe 'I have a ___x___ screen size', ->
 
@@ -130,10 +145,10 @@ describe 'General Step Defs', ->
     describe 'execution', ->
 
       it 'should set the browser resolution', ->
-        executeStep 'I have a 800x600 screen size'
-        browser.manage().window().getSize().then (size) ->
-          expect(size.width).to.equal 800
-          expect(size.height).to.equal 600
+        executeStep 'I have a 800x600 screen size', ->
+          browser.manage().window().getSize().then (size) ->
+            expect(size.width).to.equal 800
+            expect(size.height).to.equal 600
 
   describe 'I navigate backwards in my browser', ->
 
@@ -169,8 +184,8 @@ describe 'General Step Defs', ->
         browser.navigate.restore()
 
       it 'should navigate backward in the browser', ->
-        executeStep 'I navigate backwards in my browser'
-        expect(navigateSpy.calledOnce).to.equal true
+        executeStep 'I navigate backwards in my browser', ->
+          expect(navigateSpy.calledOnce).to.equal true
 
   describe 'I type "___" in the "___" field', ->
 
@@ -206,11 +221,11 @@ describe 'General Step Defs', ->
         ast_tree_walker.setWorld world
 
       it 'should clear and send the text to the field', ->
-        executeStep 'I type "First" in the "Name" field'
-        expect(world.transform.stringToVariableName.calledOnce).to.equal true
-        expect(world.currentPage.nameField.clear.calledOnce).to.equal true
-        expect(world.currentPage.nameField.sendKeys.calledOnce).to.equal true
-        expect(world.currentPage.nameField.sendKeys.calledWithExactly('First')).to.equal true
+        executeStep 'I type "First" in the "Name" field', ->
+          expect(world.transform.stringToVariableName.calledOnce).to.equal true
+          expect(world.currentPage.nameField.clear.calledOnce).to.equal true
+          expect(world.currentPage.nameField.sendKeys.calledOnce).to.equal true
+          expect(world.currentPage.nameField.sendKeys.calledWithExactly('First')).to.equal true
 
   describe 'I click the "___" link', ->
 
@@ -258,11 +273,11 @@ describe 'General Step Defs', ->
         ast_tree_walker.setWorld world
 
       it 'should click the element', ->
-        executeStep 'I click the "Search" button'
-        expect(world.transform.elementTypeToVariableName.calledOnce).to.equal true
-        expect(world.transform.stringToVariableName.calledOnce).to.equal true
-        expect(world.transform.stringToVariableName.calledWithExactly('SearchButton')).to.equal true
-        expect(world.currentPage.searchButton.click.calledOnce).to.equal true
+        executeStep 'I click the "Search" button', ->
+          expect(world.transform.elementTypeToVariableName.calledOnce).to.equal true
+          expect(world.transform.stringToVariableName.calledOnce).to.equal true
+          expect(world.transform.stringToVariableName.calledWithExactly('SearchButton')).to.equal true
+          expect(world.currentPage.searchButton.click.calledOnce).to.equal true
 
   describe 'I refresh the page', ->
 
@@ -283,8 +298,8 @@ describe 'General Step Defs', ->
         browser.refresh.restore()
 
       it 'should refresh the page', ->
-        executeStep 'I refresh the page'
-        expect(browser.refresh.calledOnce).to.equal true
+        executeStep 'I refresh the page', ->
+          expect(browser.refresh.calledOnce).to.equal true
 
   describe 'I select "___" in the "___" drop down list', ->
 
@@ -321,7 +336,7 @@ describe 'General Step Defs', ->
         browser.driver.executeScript "fixtures.cleanUp();"
 
       it 'should select the correct option by its text from the correct drop-down', ->
-        executeStep 'I select "Mountain Standard" in the "Time Zone" drop down list', (stepResult) ->
+        executeStep 'I select "Mountain Standard" in the "Time Zone" drop down list', ->
           expect(element(By.cssContainingText 'option', 'Mountain Standard').isSelected()).to.eventually.equal true
           expect(element(By.cssContainingText 'option', 'Eastern Standard').isSelected()).to.eventually.equal false
           expect(element(By.cssContainingText 'option', 'Central Standard').isSelected()).to.eventually.equal false
@@ -346,12 +361,12 @@ describe 'General Step Defs', ->
         ast_tree_walker.setWorld world
 
       it 'should succeed if the page title matches the supplied title', ->
-        executeStep 'the title should equal "Protractor Integration Test Page"', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+        executeStep 'the title should equal "Protractor Integration Test Page"', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
       it 'should fail if the page title does not match the supplied title', ->
-        executeStep 'the title should equal "Fake Title"', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+        executeStep 'the title should equal "Fake Title"', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'the "___" should be active', ->
 
@@ -388,12 +403,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if it expects the element to be active', ->
-          executeStep 'the "Button" should be active', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Button" should be active', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the element to be inactive', ->
-          executeStep 'the "Button" should not be active', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Button" should not be active', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'with an inactive element', ->
 
@@ -406,12 +421,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should fail if it expects the element to be active', ->
-          executeStep 'the "Button" should be active', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Button" should be active', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
         it 'should succeed if it expects the element to be inactive', ->
-          executeStep 'the "Button" should not be active', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Button" should not be active', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
   describe 'the "___" should be present', ->
 
@@ -445,14 +460,14 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed', ->
-          executeStep 'the "Button" should be present', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Button" should be present', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
       describe 'without element present', ->
 
         it 'should fail', ->
-          executeStep 'the "Button" should be present', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Button" should be present', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'I should be on the "___" page', ->
 
@@ -546,12 +561,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if the element contains the expected text', ->
-          executeStep 'the "Test Span" should contain the text "Span Text"', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test Span" should contain the text "Span Text"', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if the element does not contain the expected text', ->
-          executeStep 'the "Test Span" should contain the text "Fake Text"', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test Span" should contain the text "Fake Text"', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'with an input', ->
 
@@ -565,12 +580,12 @@ describe 'General Step Defs', ->
 
         it 'should succeed if the element contains the expected text', ->
           world.currentPage.testInput.sendKeys("Input Text")
-          executeStep 'the "Test Input" should contain the text "Input Text"', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test Input" should contain the text "Input Text"', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if the element does not contain the expected text', ->
-          executeStep 'the "Test Input" should contain the text "Input Text"', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test Input" should contain the text "Input Text"', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe '"___" should appear in the "___" drop down list', ->
 
@@ -607,12 +622,12 @@ describe 'General Step Defs', ->
         browser.driver.executeScript "fixtures.cleanUp();"
 
       it 'should succeed if the expected option is in the drop down list', ->
-        executeStep '"Mountain Standard" should appear in the "Time Zone" drop down list', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+        executeStep '"Mountain Standard" should appear in the "Time Zone" drop down list', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
       it 'should fail if the expected option is not in the drop down list', ->
-        executeStep '"Pacific Standard" should appear in the "Time Zone" drop down list', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+        executeStep '"Pacific Standard" should appear in the "Time Zone" drop down list', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'the "___" should be displayed', ->
 
@@ -649,12 +664,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if it expects the element to be displayed', ->
-          executeStep 'the "Test Span" should be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test Span" should be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the element to not be displayed', ->
-          executeStep 'the "Test Span" should not be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test Span" should not be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'without the element displayed', ->
 
@@ -667,22 +682,22 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if it expects the element to not be displayed', ->
-          executeStep 'the "Test Span" should not be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test Span" should not be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the element to be displayed', ->
-          executeStep 'the "Test Span" should be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test Span" should be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'without the element present', ->
 
         it 'should succeed if it expects the element to not be displayed', ->
-          executeStep 'the "Test Span" should not be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test Span" should not be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the element to be displayed', ->
-          executeStep 'the "Test Span" should be displayed', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test Span" should be displayed', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'the "___" should have the placeholder text "___"', ->
 
@@ -726,12 +741,12 @@ describe 'General Step Defs', ->
         browser.driver.executeScript "fixtures.cleanUp();"
 
       it 'should succeed if the element contains the expected placeholder text', ->
-        executeStep 'the "Test Input" should have the placeholder text "Test Placeholder"', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+        executeStep 'the "Test Input" should have the placeholder text "Test Placeholder"', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
       it 'should fail if the element does not contain the expected placeholder text', ->
-        executeStep 'the "Test Input" should have the placeholder text "Fake Placeholder"', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+        executeStep 'the "Test Input" should have the placeholder text "Fake Placeholder"', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'the "___" should be enabled', ->
 
@@ -783,12 +798,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if it expects the button to be enabled', ->
-          executeStep 'the "Test" button should be enabled', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test" button should be enabled', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the button to be disabled', ->
-          executeStep 'the "Test" button should not be enabled', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test" button should not be enabled', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'with disabled button', ->
 
@@ -801,12 +816,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should fail if it expects the button to be enabled', ->
-          executeStep 'the "Test" button should be enabled', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test" button should be enabled', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
         it 'should succeed if it expects the button to be disabled', ->
-          executeStep 'the "Test" button should not be enabled', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test" button should not be enabled', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
   describe '"___" should be selected in the "___" drop down list', ->
 
@@ -849,12 +864,12 @@ describe 'General Step Defs', ->
         browser.driver.executeScript "fixtures.cleanUp();"
 
       it 'should succeed if the expected option is selected', ->
-        executeStep '"Eastern Standard" should be selected in the "Time Zone" drop down list', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+        executeStep '"Eastern Standard" should be selected in the "Time Zone" drop down list', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
       it 'should fail if the expected option is not selected', ->
-        executeStep '"Mountain Standard" should be selected in the "Time Zone" drop down list', (stepResult) ->
-          expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+        executeStep '"Mountain Standard" should be selected in the "Time Zone" drop down list', ->
+          expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
   describe 'the "___" should be checked', ->
 
@@ -894,12 +909,12 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if it expects the checkbox to be selected', ->
-          executeStep 'the "Test" checkbox should be checked', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test" checkbox should be checked', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
         it 'should fail if it expects the checkbox to not be selected', ->
-          executeStep 'the "Test" checkbox should not be checked', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test" checkbox should not be checked', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
       describe 'with an unselected checkbox', ->
 
@@ -912,9 +927,9 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should fail if it expects the checkbox to be selected', ->
-          executeStep 'the "Test" checkbox should be checked', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.FAILED
+          executeStep 'the "Test" checkbox should be checked', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.FAILED
 
         it 'should succeed if it expects the checkbox to not be selected', ->
-          executeStep 'the "Test" checkbox should not be checked', (stepResult) ->
-            expect(stepResult.getStatus()).to.equal Cucumber.Status.PASSED
+          executeStep 'the "Test" checkbox should not be checked', ->
+            expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED

@@ -2,7 +2,8 @@ path = require 'path'
 rek = require 'rekuire'
 
 module.exports.config =
-  framework: 'cucumber'
+  framework: 'custom'
+  frameworkPath: require.resolve 'protractor-cucumber-framework'
 
   # Capabilities to be passed to the webdriver instance.
   capabilities:

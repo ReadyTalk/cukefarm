@@ -11,10 +11,8 @@ class World
   currentPage: null
   pageObjectMap: null
 
-  constructor: (callback) ->
+  constructor: ->
     chai.use chaiAsPromised
     @expect = chai.expect
-
-    callback()
 
 module.exports.World = World

@@ -42,34 +42,36 @@ return verifyStepCaptures('I go to the "Test" page', 'Test');
  execution should set the currentPage on the World
 
 ```
-executeStep('I am on the "Test" page');
-return expect(world.currentPage).to.equal(stubPage);
+return executeStep('I am on the "Test" page', function() {
+  return expect(world.currentPage).to.equal(stubPage);
+});
 ```
 
 
  execution should call get on the page
 
 ```
-executeStep('I am on the "Test" page');
-return expect(stubPage.get.calledOnce).to.equal(true);
+return executeStep('I am on the "Test" page', function() {
+  return expect(stubPage.get.calledOnce).to.equal(true);
+});
 ```
 
 
  execution should call waitForLoaded on the page
 
 ```
-executeStep('I am on the "Test" page');
-return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
+return executeStep('I am on the "Test" page', function() {
+  return expect(stubPage.waitForLoaded.calledOnce).to.equal(true);
+});
 ```
 
 
  execution should provide a clear error message if the Page Object was not added to the PageObjectMap
 
 ```
-var callbackSpy;
-callbackSpy = sinon.spy();
-executeStep('I am on the "Missing" page', callbackSpy);
-return expect(callbackSpy.getCall(0).args[0].getFailureException().toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
+return executeStep('I am on the "Missing" page', function() {
+  return expect(currentStepResult.getFailureException().toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
+});
 ```
 
 
@@ -121,10 +123,11 @@ return verifyStepCaptures('I have a 800x600 screen size', '800', '600');
  execution should set the browser resolution
 
 ```
-executeStep('I have a 800x600 screen size');
-return browser.manage().window().getSize().then(function(size) {
-  expect(size.width).to.equal(800);
-  return expect(size.height).to.equal(600);
+return executeStep('I have a 800x600 screen size', function() {
+  return browser.manage().window().getSize().then(function(size) {
+    expect(size.width).to.equal(800);
+    return expect(size.height).to.equal(600);
+  });
 });
 ```
 
@@ -170,8 +173,9 @@ return verifyStepDoesNotCapture('I navigate backwards in my browser', 'navigate'
  execution should navigate backward in the browser
 
 ```
-executeStep('I navigate backwards in my browser');
-return expect(navigateSpy.calledOnce).to.equal(true);
+return executeStep('I navigate backwards in my browser', function() {
+  return expect(navigateSpy.calledOnce).to.equal(true);
+});
 ```
 
 
@@ -209,11 +213,12 @@ return verifyStepCaptures('I type "First" in the "Name" field', 'First', 'Name')
  execution should clear and send the text to the field
 
 ```
-executeStep('I type "First" in the "Name" field');
-expect(world.transform.stringToVariableName.calledOnce).to.equal(true);
-expect(world.currentPage.nameField.clear.calledOnce).to.equal(true);
-expect(world.currentPage.nameField.sendKeys.calledOnce).to.equal(true);
-return expect(world.currentPage.nameField.sendKeys.calledWithExactly('First')).to.equal(true);
+return executeStep('I type "First" in the "Name" field', function() {
+  expect(world.transform.stringToVariableName.calledOnce).to.equal(true);
+  expect(world.currentPage.nameField.clear.calledOnce).to.equal(true);
+  expect(world.currentPage.nameField.sendKeys.calledOnce).to.equal(true);
+  return expect(world.currentPage.nameField.sendKeys.calledWithExactly('First')).to.equal(true);
+});
 ```
 
 
@@ -279,11 +284,12 @@ return verifyStepDoesNotCapture('I click the "Search" tab', ' ');
  execution should click the element
 
 ```
-executeStep('I click the "Search" button');
-expect(world.transform.elementTypeToVariableName.calledOnce).to.equal(true);
-expect(world.transform.stringToVariableName.calledOnce).to.equal(true);
-expect(world.transform.stringToVariableName.calledWithExactly('SearchButton')).to.equal(true);
-return expect(world.currentPage.searchButton.click.calledOnce).to.equal(true);
+return executeStep('I click the "Search" button', function() {
+  expect(world.transform.elementTypeToVariableName.calledOnce).to.equal(true);
+  expect(world.transform.stringToVariableName.calledOnce).to.equal(true);
+  expect(world.transform.stringToVariableName.calledWithExactly('SearchButton')).to.equal(true);
+  return expect(world.currentPage.searchButton.click.calledOnce).to.equal(true);
+});
 ```
 
 
@@ -300,8 +306,9 @@ return verifyStepMatch('I refresh the page');
  execution should refresh the page
 
 ```
-executeStep('I refresh the page');
-return expect(browser.refresh.calledOnce).to.equal(true);
+return executeStep('I refresh the page', function() {
+  return expect(browser.refresh.calledOnce).to.equal(true);
+});
 ```
 
 
@@ -325,7 +332,7 @@ return verifyStepCaptures('I select "Mountain Standard" in the "Time Zone" drop 
  execution should select the correct option by its text from the correct drop-down
 
 ```
-return executeStep('I select "Mountain Standard" in the "Time Zone" drop down list', function(stepResult) {
+return executeStep('I select "Mountain Standard" in the "Time Zone" drop down list', function() {
   expect(element(By.cssContainingText('option', 'Mountain Standard')).isSelected()).to.eventually.equal(true);
   expect(element(By.cssContainingText('option', 'Eastern Standard')).isSelected()).to.eventually.equal(false);
   return expect(element(By.cssContainingText('option', 'Central Standard')).isSelected()).to.eventually.equal(false);
@@ -353,8 +360,8 @@ return verifyStepCaptures('the title should equal "My Title"', 'My Title');
  execution should succeed if the page title matches the supplied title
 
 ```
-return executeStep('the title should equal "Protractor Integration Test Page"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the title should equal "Protractor Integration Test Page"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -362,8 +369,8 @@ return executeStep('the title should equal "Protractor Integration Test Page"', 
  execution should fail if the page title does not match the supplied title
 
 ```
-return executeStep('the title should equal "Fake Title"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the title should equal "Fake Title"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -396,8 +403,8 @@ return verifyStepCaptures('the "Inactive Field" should not be active', 'Inactive
  with an active element should succeed if it expects the element to be active
 
 ```
-return executeStep('the "Button" should be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Button" should be active', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -405,8 +412,8 @@ return executeStep('the "Button" should be active', function(stepResult) {
  with an active element should fail if it expects the element to be inactive
 
 ```
-return executeStep('the "Button" should not be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Button" should not be active', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -415,8 +422,8 @@ return executeStep('the "Button" should not be active', function(stepResult) {
  with an inactive element should fail if it expects the element to be active
 
 ```
-return executeStep('the "Button" should be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Button" should be active', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -424,8 +431,8 @@ return executeStep('the "Button" should be active', function(stepResult) {
  with an inactive element should succeed if it expects the element to be inactive
 
 ```
-return executeStep('the "Button" should not be active', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Button" should not be active', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -451,8 +458,8 @@ return verifyStepCaptures('the "Home Button" should be present', 'Home Button');
  with element present should succeed
 
 ```
-return executeStep('the "Button" should be present', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Button" should be present', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -461,8 +468,8 @@ return executeStep('the "Button" should be present', function(stepResult) {
  without element present should fail
 
 ```
-return executeStep('the "Button" should be present', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Button" should be present', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -570,8 +577,8 @@ return verifyStepDoesNotCapture('the "Field" should contain the text "Text Strin
  with a span should succeed if the element contains the expected text
 
 ```
-return executeStep('the "Test Span" should contain the text "Span Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Span" should contain the text "Span Text"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -579,8 +586,8 @@ return executeStep('the "Test Span" should contain the text "Span Text"', functi
  with a span should fail if the element does not contain the expected text
 
 ```
-return executeStep('the "Test Span" should contain the text "Fake Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Span" should contain the text "Fake Text"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -590,8 +597,8 @@ return executeStep('the "Test Span" should contain the text "Fake Text"', functi
 
 ```
 world.currentPage.testInput.sendKeys("Input Text");
-return executeStep('the "Test Input" should contain the text "Input Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Input" should contain the text "Input Text"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -599,8 +606,8 @@ return executeStep('the "Test Input" should contain the text "Input Text"', func
  with an input should fail if the element does not contain the expected text
 
 ```
-return executeStep('the "Test Input" should contain the text "Input Text"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Input" should contain the text "Input Text"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -625,8 +632,8 @@ return verifyStepCaptures('"Mountain Time" should appear in the "Time Zone" drop
  execution should succeed if the expected option is in the drop down list
 
 ```
-return executeStep('"Mountain Standard" should appear in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('"Mountain Standard" should appear in the "Time Zone" drop down list', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -634,8 +641,8 @@ return executeStep('"Mountain Standard" should appear in the "Time Zone" drop do
  execution should fail if the expected option is not in the drop down list
 
 ```
-return executeStep('"Pacific Standard" should appear in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('"Pacific Standard" should appear in the "Time Zone" drop down list', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -668,8 +675,8 @@ return verifyStepCaptures('the "Cancel Button" should not be displayed', 'Cancel
  with the element displayed should succeed if it expects the element to be displayed
 
 ```
-return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Span" should be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -677,8 +684,8 @@ return executeStep('the "Test Span" should be displayed', function(stepResult) {
  with the element displayed should fail if it expects the element to not be displayed
 
 ```
-return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Span" should not be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -687,8 +694,8 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
  without the element displayed should succeed if it expects the element to not be displayed
 
 ```
-return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Span" should not be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -696,8 +703,8 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
  without the element displayed should fail if it expects the element to be displayed
 
 ```
-return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Span" should be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -706,8 +713,8 @@ return executeStep('the "Test Span" should be displayed', function(stepResult) {
  without the element present should succeed if it expects the element to not be displayed
 
 ```
-return executeStep('the "Test Span" should not be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Span" should not be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -715,8 +722,8 @@ return executeStep('the "Test Span" should not be displayed', function(stepResul
  without the element present should fail if it expects the element to be displayed
 
 ```
-return executeStep('the "Test Span" should be displayed', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Span" should be displayed', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -769,8 +776,8 @@ return verifyStepDoesNotCapture('the "Username Field" should have the placeholde
  execution should succeed if the element contains the expected placeholder text
 
 ```
-return executeStep('the "Test Input" should have the placeholder text "Test Placeholder"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test Input" should have the placeholder text "Test Placeholder"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -778,8 +785,8 @@ return executeStep('the "Test Input" should have the placeholder text "Test Plac
  execution should fail if the element does not contain the expected placeholder text
 
 ```
-return executeStep('the "Test Input" should have the placeholder text "Fake Placeholder"', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test Input" should have the placeholder text "Fake Placeholder"', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -847,8 +854,8 @@ return verifyStepDoesNotCapture('the "Save Configuration" button should be enabl
  with enabled button should succeed if it expects the button to be enabled
 
 ```
-return executeStep('the "Test" button should be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test" button should be enabled', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -856,8 +863,8 @@ return executeStep('the "Test" button should be enabled', function(stepResult) {
  with enabled button should fail if it expects the button to be disabled
 
 ```
-return executeStep('the "Test" button should not be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test" button should not be enabled', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -866,8 +873,8 @@ return executeStep('the "Test" button should not be enabled', function(stepResul
  with disabled button should fail if it expects the button to be enabled
 
 ```
-return executeStep('the "Test" button should be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test" button should be enabled', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -875,8 +882,8 @@ return executeStep('the "Test" button should be enabled', function(stepResult) {
  with disabled button should succeed if it expects the button to be disabled
 
 ```
-return executeStep('the "Test" button should not be enabled', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test" button should not be enabled', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -915,8 +922,8 @@ return verifyStepDoesNotCapture('"Mountain Standard" should be selected in the "
  execution should succeed if the expected option is selected
 
 ```
-return executeStep('"Eastern Standard" should be selected in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('"Eastern Standard" should be selected in the "Time Zone" drop down list', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -924,8 +931,8 @@ return executeStep('"Eastern Standard" should be selected in the "Time Zone" dro
  execution should fail if the expected option is not selected
 
 ```
-return executeStep('"Mountain Standard" should be selected in the "Time Zone" drop down list', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('"Mountain Standard" should be selected in the "Time Zone" drop down list', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -965,8 +972,8 @@ return verifyStepMatch('the "Enable Emails" checkbox should not be checked');
  with a selected checkbox should succeed if it expects the checkbox to be selected
 
 ```
-return executeStep('the "Test" checkbox should be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test" checkbox should be checked', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```
 
@@ -974,8 +981,8 @@ return executeStep('the "Test" checkbox should be checked', function(stepResult)
  with a selected checkbox should fail if it expects the checkbox to not be selected
 
 ```
-return executeStep('the "Test" checkbox should not be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test" checkbox should not be checked', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -984,8 +991,8 @@ return executeStep('the "Test" checkbox should not be checked', function(stepRes
  with an unselected checkbox should fail if it expects the checkbox to be selected
 
 ```
-return executeStep('the "Test" checkbox should be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
+return executeStep('the "Test" checkbox should be checked', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.FAILED);
 });
 ```
 
@@ -993,7 +1000,7 @@ return executeStep('the "Test" checkbox should be checked', function(stepResult)
  with an unselected checkbox should succeed if it expects the checkbox to not be selected
 
 ```
-return executeStep('the "Test" checkbox should not be checked', function(stepResult) {
-  return expect(stepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
+return executeStep('the "Test" checkbox should not be checked', function() {
+  return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });
 ```

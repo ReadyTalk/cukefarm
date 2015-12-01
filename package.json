@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "^1.9.1",
-    "cucumber": "^0.8.1",
+    "cucumber": "~0.9.0",
     "docha": "^0.1.2",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
@@ -29,12 +29,15 @@
     "jit-grunt": "^0.9.1",
     "js-fixtures": "^1.5.1",
     "mocha": "^2.3.4",
+    "protractor-cucumber-framework": "^0.3.0",
     "sinon": "^1.10.3",
     "sinon-as-promised": "^4.0.0",
     "time-grunt": "^1.0.0"
   },
   "peerDependencies": {
-    "cucumber": ">= 0.5 < 1"
+    "cucumber": ">= 0.9 < 1",
+    "protractor": "^3.0.0",
+    "protractor-cucumber-framework": "^0.3.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
   "keywords": [
