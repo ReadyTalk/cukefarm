@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   require('time-grunt') grunt
   require('jit-grunt') grunt,
-    protractor: 'grunt-protractor-runner'
+    protractor: 'grunt-protractor3-runner'
     connect: 'grunt-contrib-connect'
     coffee: 'grunt-contrib-coffee'
 
