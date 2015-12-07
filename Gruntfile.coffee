@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   require('time-grunt') grunt
   require('jit-grunt') grunt,
-    protractor: 'grunt-protractor-runner'
+    protractor: 'grunt-protractor3-runner'
     connect: 'grunt-contrib-connect'
     coffee: 'grunt-contrib-coffee'
 
@@ -33,6 +33,7 @@ module.exports = (grunt) ->
 
     protractor:
       options:
+        webdriverManagerUpdate: true
         configFile: "./spec/conf/protractor.spec.conf.coffee"
 
       chrome:
@@ -46,8 +47,6 @@ module.exports = (grunt) ->
             browser: 'firefox'
 
     shell:
-      webdriverManagerUpdate:
-        command: "node_modules/grunt-protractor-runner/node_modules/.bin/webdriver-manager update"
       generateApiDocs:
         command: [
           "docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _"
@@ -72,7 +71,6 @@ module.exports = (grunt) ->
   grunt.registerTask 'test', (target = 'firefox') ->
     return grunt.task.run [
       'coffee:compile'
-      'shell:webdriverManagerUpdate'
       'express:server'
       "protractor:#{target}"
     ]
