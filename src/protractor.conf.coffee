@@ -12,7 +12,6 @@ module.exports.config =
 
   cucumberOpts:
     require: [rek.path 'GeneralStepDefs']
-    tags: []
     format: 'pretty'
 
   onPrepare: ->
