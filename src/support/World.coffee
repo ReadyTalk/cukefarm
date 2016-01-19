@@ -1,8 +1,7 @@
-rek = require 'rekuire'
 chai = require 'chai'
 chaiAsPromised = require 'chai-as-promised'
-ElementHelper = rek 'ElementHelper'
-Transform = rek 'Transform'
+ElementHelper = require './ElementHelper.js'
+Transform = require './Transform.js'
 
 class World
   Q: require 'q'
