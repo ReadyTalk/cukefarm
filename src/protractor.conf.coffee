@@ -1,5 +1,4 @@
 path = require 'path'
-rek = require 'rekuire'
 
 module.exports.config =
   framework: 'custom'
@@ -11,7 +10,7 @@ module.exports.config =
       args: ['--test-type']   # Disable the "unsupported flag" prompt. See: https://github.com/angular/protractor/issues/835
 
   cucumberOpts:
-    require: [rek.path 'GeneralStepDefs']
+    require: [path.resolve './node_modules/cukefarm/lib/step_definitions/GeneralStepDefs.js']
     tags: []
     format: 'pretty'
 

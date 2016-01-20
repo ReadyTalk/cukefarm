@@ -10,13 +10,13 @@
   "dependencies": {
     "chai": "^3.4.0",
     "chai-as-promised": "^5.0.0",
-    "q": "^1.0.1",
-    "rekuire": "^0.1.5"
+    "q": "^1.0.1"
   },
   "author": "Nathan Thompson",
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "^1.9.1",
+    "coffeelint": "^1.14.2",
     "cucumber": "~0.9.0",
     "docha": "^0.1.2",
     "grunt": "^0.4.5",
@@ -51,10 +51,5 @@
     "test": "grunt",
     "test-firefox": "grunt ci:firefox",
     "test-chrome": "grunt ci:chrome"
-  },
-  "rekuire": {
-    "ignore": [
-      "src"
-    ]
-  }
+  }  
 }
