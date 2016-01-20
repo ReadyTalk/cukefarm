@@ -30,7 +30,6 @@
     "js-fixtures": "^1.5.1",
     "mocha": "^2.3.4",
     "protractor-cucumber-framework": "^0.3.0",
-    "rekuire": "^0.1.5",
     "sinon": "^1.10.3",
     "sinon-as-promised": "^4.0.0",
     "time-grunt": "^1.0.0"
@@ -52,10 +51,5 @@
     "test": "grunt",
     "test-firefox": "grunt ci:firefox",
     "test-chrome": "grunt ci:chrome"
-  },
-  "rekuire": {
-    "ignore": [
-      "src"
-    ]
-  }
+  }  
 }
