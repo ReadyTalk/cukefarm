@@ -1,6 +1,6 @@
 {
   "name": "cukefarm",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "An opinionated template for writing Cucumber tests with Protractor",
   "main": "index.js",
   "repository": {
@@ -51,5 +51,5 @@
     "test": "grunt",
     "test-firefox": "grunt ci:firefox",
     "test-chrome": "grunt ci:chrome"
-  }  
+  }
 }
