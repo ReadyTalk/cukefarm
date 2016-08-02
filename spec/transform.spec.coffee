@@ -1,8 +1,7 @@
 {expect} = require 'chai'
-rek = require 'rekuire'
 
-Transform = rek 'Transform'
-{World} = rek 'World'
+Transform = require '../lib/support/Transform.js'
+{World} = require '../lib/support/World.js'
 
 describe 'transform', ->
 

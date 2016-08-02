@@ -1,15 +1,15 @@
-rek = require 'rekuire'
 Cucumber = require 'cucumber'
 sinon = require 'sinon'
 Promise = require 'q'
 sinonAsPromised = require('sinon-as-promised')(Promise)
+path = require 'path'
 {expect} = require 'chai'
 
-{World} = rek 'World'
+{World} = require '../lib/support/World.js'
 
 describe 'General Step Defs', ->
 
-  supportCodeFilePaths = [rek.path 'GeneralStepDefs']
+  supportCodeFilePaths = [path.resolve './lib/step_definitions/GeneralStepDefs.js']
   supportCodeLibrary = Cucumber.Cli.SupportCodeLoader(supportCodeFilePaths, []).getSupportCodeLibrary()
   required_options = { strict: false, failFast: false, dryRun: false }
   required_listener = [Cucumber.Listener()]

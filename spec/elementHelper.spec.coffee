@@ -1,12 +1,11 @@
 chai = require 'chai'
 chaiAsPromised = require 'chai-as-promised'
-rek = require 'rekuire'
 
 chai.use chaiAsPromised
 expect = chai.expect
 
-ElementHelper = rek 'ElementHelper'
-{World} = rek 'World'
+ElementHelper = require '../lib/support/ElementHelper.js'
+{World} = require '../lib/support/World.js'
 
 describe 'elementHelper', ->
 

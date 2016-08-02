@@ -1,6 +1,5 @@
-rek = require('rekuire');
-World = rek('World').World;
-config = rek('protractor.conf').config;
+World = require('./lib/support/World.js').World;
+config = require('./lib/protractor.conf.js').config;
 
 module.exports = {
   World: World,
