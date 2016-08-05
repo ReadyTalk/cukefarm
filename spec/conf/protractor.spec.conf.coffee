@@ -1,7 +1,7 @@
 config = require('../../src/protractor.conf.coffee').config
 
 config.capabilities =
-  browserName: 'chrome'
+  browserName: 'firefox'
 
 config.framework = 'mocha'
 config.specs = '../**/*.spec.coffee'
