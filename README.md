@@ -296,7 +296,7 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 
 # Running CukeFarm Unit Tests
 
-* Install [Chrome]
+* Install [Firefox]
 * Run `npm install` to download dependencies.
 * Run `npm test` to lint all files and run the unit tests.
 
@@ -308,4 +308,4 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 [Reference Configuration File]:https://github.com/angular/protractor/blob/master/docs/referenceConf.js
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule
-[Chrome]:https://www.google.com/chrome/browser/desktop/
+[Firefox]:https://www.mozilla.org/en-US/
