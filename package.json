@@ -24,21 +24,12 @@
     "cucumber": "^1.2.1",
     "docha": "^0.1.2",
     "express": "^4.14.0",
-    "grunt": "^1.0.1",
-    "grunt-cli": "^1.2.0",
-    "grunt-coffeelint": "^0.0.16",
-    "grunt-contrib-coffee": "^1.0.0",
-    "grunt-express": "^1.4.1",
-    "grunt-protractor3-runner": "^3.0.0",
-    "grunt-shell": "^1.3.0",
-    "jit-grunt": "^0.10.0",
     "js-fixtures": "^1.5.3",
     "mocha": "^3.0.0",
     "protractor": "^4.0.2",
     "protractor-cucumber-framework": "^0.6.0",
     "sinon": "^1.17.5",
-    "sinon-as-promised": "^4.0.2",
-    "time-grunt": "^1.4.0"
+    "sinon-as-promised": "^4.0.2"
   },
   "peerDependencies": {
     "cucumber": "^1.0.0",
@@ -56,11 +47,7 @@
     "ci": "npm run lint && npm run test && npm run generateApiDocs",
     "generateApiDocs": "coffee util/generateApiDocs.coffee",
     "lint": "coffeelint -f coffeelint.json src",
-    "prepublish": "grunt coffee:compile",
-    "prepublish-no-grunt": "coffee util/compileSrc.coffee",
-    "test": "grunt",
-    "test-no-grunt": "coffee util/compileSrc.coffee && coffee util/runProtractorTests.coffee",
-    "test-firefox": "grunt ci:firefox",
-    "test-chrome": "grunt ci:chrome"
+    "prepublish": "coffee util/compileSrc.coffee",
+    "test": "coffee util/compileSrc.coffee && coffee util/runProtractorTests.coffee"
   }
 }
