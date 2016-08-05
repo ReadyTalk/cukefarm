@@ -106,11 +106,11 @@ describe 'General Step Defs', ->
             Test: ->
               stubPage
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       afterEach ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       it 'should set the currentPage on the World', ->
         executeStep 'I am on the "Test" page', ->
@@ -228,11 +228,11 @@ describe 'General Step Defs', ->
               clear: sinon.stub()
               sendKeys: sinon.stub().resolves()
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       afterEach ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       it 'should clear and send the text to the field', ->
         executeStep 'I type "First" in the "Name" field', ->
@@ -283,11 +283,11 @@ describe 'General Step Defs', ->
             searchButton:
               click: sinon.stub()
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       afterEach ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       it 'should click the element', ->
         executeStep 'I click the "Search" button', ->
@@ -338,11 +338,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -383,11 +383,11 @@ describe 'General Step Defs', ->
 
       before ->
         world = new World ->
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       it 'should succeed if the page title matches the supplied title', ->
         executeStep 'the title should equal "Protractor Integration Test Page"', ->
@@ -420,11 +420,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           button: $ 'button#testButton'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with an active element', ->
 
@@ -482,11 +482,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           button: $ 'button#testButton'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with element present', ->
 
@@ -543,11 +543,11 @@ describe 'General Step Defs', ->
             Test: ->
               stubPage
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       afterEach ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       it 'should set the currentPage on the World', ->
         executeStep 'I should be on the "Test" page'
@@ -590,11 +590,11 @@ describe 'General Step Defs', ->
           testSpan: $ 'span#testSpan'
           testInput: $ 'input#testInput'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with a span', ->
 
@@ -653,11 +653,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -703,11 +703,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           testSpan: element(By.css 'span#testSpan')
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with the element displayed', ->
 
@@ -787,11 +787,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           testInput: $ 'input#testInput'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('<input id=\"testInput\" placeholder=\"Test Placeholder\" />');"
@@ -847,11 +847,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           testButton: $ 'button#testButton'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with enabled button', ->
 
@@ -915,11 +915,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -968,11 +968,11 @@ describe 'General Step Defs', ->
         world.currentPage =
           testCheckbox: $ 'input#testCheckbox'
         sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       after ->
         sandbox.restore()
-        scenarioRunner = initScenarioRunner()
+        initScenarioRunner()
 
       describe 'with a selected checkbox', ->
 
