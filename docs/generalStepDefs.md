@@ -333,9 +333,7 @@ return verifyStepCaptures('I select "Mountain Standard" in the "Time Zone" drop 
 
 ```
 return executeStep('I select "Mountain Standard" in the "Time Zone" drop down list', function() {
-  expect(element(By.cssContainingText('option', 'Mountain Standard')).isSelected()).to.eventually.equal(true);
-  expect(element(By.cssContainingText('option', 'Eastern Standard')).isSelected()).to.eventually.equal(false);
-  return expect(element(By.cssContainingText('option', 'Central Standard')).isSelected()).to.eventually.equal(false);
+  return Promise.all([expect(element(By.cssContainingText('option', 'Eastern Standard')).isSelected()).to.eventually.equal(false), expect(element(By.cssContainingText('option', 'Central Standard')).isSelected()).to.eventually.equal(false), expect(element(By.cssContainingText('option', 'Mountain Standard')).isSelected()).to.eventually.equal(true)]);
 });
 ```
 
@@ -596,7 +594,7 @@ return executeStep('the "Test Span" should contain the text "Fake Text"', functi
  with an input should succeed if the element contains the expected text
 
 ```
-world.currentPage.testInput.sendKeys("Input Text");
+element(By.css('input')).sendKeys("Input Text");
 return executeStep('the "Test Input" should contain the text "Input Text"', function() {
   return expect(currentStepResult.getStatus()).to.equal(Cucumber.Status.PASSED);
 });

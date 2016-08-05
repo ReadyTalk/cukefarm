@@ -9,21 +9,27 @@ path = require 'path'
 
 describe 'General Step Defs', ->
 
+  sandbox = sinon.sandbox.create()
+  scenarioRunner = {}
+  currentStepResult = {}
+
   supportCodeFilePaths = [path.resolve './lib/step_definitions/GeneralStepDefs.js']
   supportCodeLibrary = Cucumber.Cli.SupportCodeLoader(supportCodeFilePaths, []).getSupportCodeLibrary()
   required_options = { strict: false, failFast: false, dryRun: false }
-  required_listener = [Cucumber.Listener()]
 
-  currentStepResult = {}
-  supportCodeLibrary.registerHandler 'StepResult', (event, callback) ->
-    currentStepResult = event.getPayloadItem 'stepResult'
+  supportCodeLibrary.registerHandler 'StepResult', (stepResult, callback) ->
+    currentStepResult = stepResult
     callback()
 
-  ast_tree_walker = new Cucumber.Runtime.AstTreeWalker({}, supportCodeLibrary, required_listener, required_options)
+  world = supportCodeLibrary.instantiateNewWorld()
 
-  scenario =
-    getAttachments: ->
-  ast_tree_walker.witnessNewScenario scenario
+  initScenarioRunner = ->
+    scenario =
+      getAttachments: ->
+    event_broadcaster = Cucumber.Runtime.EventBroadcaster supportCodeLibrary.getListeners()
+    scenarioRunner = new Cucumber.Runtime.ScenarioRunner(scenario, supportCodeLibrary, event_broadcaster, required_options)
+
+  initScenarioRunner()
 
   stepPattern = ''
 
@@ -33,9 +39,10 @@ describe 'General Step Defs', ->
     stepDefs[0]
 
   executeStep = (stepName, callback = (->), keyword = 'Given') =>
-    step = new Cucumber.Ast.Step(keyword, stepName, '', '')
+    step = new Cucumber.Ast.Step
+      text: stepName
     stepDef = lookupStepDefinition stepName
-    ast_tree_walker.executeStep step, stepDef, callback
+    scenarioRunner.executeStep step, stepDef, callback
 
   verifyStepMatch = (stepName, pattern = stepPattern) ->
     stepDef = lookupStepDefinition stepName
@@ -88,7 +95,6 @@ describe 'General Step Defs', ->
     describe 'execution', ->
 
       stubPage = {}
-      world = {}
 
       beforeEach ->
         stubPage =
@@ -99,7 +105,12 @@ describe 'General Step Defs', ->
           pageObjectMap:
             Test: ->
               stubPage
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      afterEach ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       it 'should set the currentPage on the World', ->
         executeStep 'I am on the "Test" page', ->
@@ -208,8 +219,6 @@ describe 'General Step Defs', ->
 
     describe 'execution', ->
 
-      world = {}
-
       beforeEach ->
         world =
           transform:
@@ -218,7 +227,12 @@ describe 'General Step Defs', ->
             nameField:
               clear: sinon.stub()
               sendKeys: sinon.stub().resolves()
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      afterEach ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       it 'should clear and send the text to the field', ->
         executeStep 'I type "First" in the "Name" field', ->
@@ -260,8 +274,6 @@ describe 'General Step Defs', ->
 
     describe 'execution', ->
 
-      world = {}
-
       beforeEach ->
         world =
           transform:
@@ -270,7 +282,12 @@ describe 'General Step Defs', ->
           currentPage:
             searchButton:
               click: sinon.stub()
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      afterEach ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       it 'should click the element', ->
         executeStep 'I click the "Search" button', ->
@@ -320,7 +337,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -329,17 +351,20 @@ describe 'General Step Defs', ->
             <option>Mountain Standard</option>
             <option>Central Standard</option>
           </select>');"
-        browser.driver.switchTo().frame('js-fixtures')
+        .then ->
+          return browser.driver.switchTo().frame('js-fixtures')
 
       afterEach ->
-        browser.driver.switchTo().defaultContent()
-        browser.driver.executeScript "fixtures.cleanUp();"
+        return browser.driver.switchTo().defaultContent().then ->
+          return browser.driver.executeScript "fixtures.cleanUp();"
 
       it 'should select the correct option by its text from the correct drop-down', ->
         executeStep 'I select "Mountain Standard" in the "Time Zone" drop down list', ->
-          expect(element(By.cssContainingText 'option', 'Mountain Standard').isSelected()).to.eventually.equal true
-          expect(element(By.cssContainingText 'option', 'Eastern Standard').isSelected()).to.eventually.equal false
-          expect(element(By.cssContainingText 'option', 'Central Standard').isSelected()).to.eventually.equal false
+          return Promise.all [
+            expect(element(By.cssContainingText 'option', 'Eastern Standard').isSelected()).to.eventually.equal false
+            expect(element(By.cssContainingText 'option', 'Central Standard').isSelected()).to.eventually.equal false
+            expect(element(By.cssContainingText 'option', 'Mountain Standard').isSelected()).to.eventually.equal true
+          ]
 
   describe 'the title should equal "___"', ->
 
@@ -358,7 +383,11 @@ describe 'General Step Defs', ->
 
       before ->
         world = new World ->
-        ast_tree_walker.setWorld world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       it 'should succeed if the page title matches the supplied title', ->
         executeStep 'the title should equal "Protractor Integration Test Page"', ->
@@ -390,7 +419,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           button: $ 'button#testButton'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with an active element', ->
 
@@ -447,7 +481,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           button: $ 'button#testButton'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with element present', ->
 
@@ -494,7 +533,6 @@ describe 'General Step Defs', ->
     describe 'execution', ->
 
       stubPage = {}
-      world = {}
 
       beforeEach ->
         stubPage =
@@ -504,7 +542,12 @@ describe 'General Step Defs', ->
           pageObjectMap:
             Test: ->
               stubPage
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      afterEach ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       it 'should set the currentPage on the World', ->
         executeStep 'I should be on the "Test" page'
@@ -541,14 +584,17 @@ describe 'General Step Defs', ->
 
     describe 'execution', ->
 
-      world = {}
-
       before ->
         world = new World ->
         world.currentPage =
           testSpan: $ 'span#testSpan'
           testInput: $ 'input#testInput'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with a span', ->
 
@@ -579,7 +625,7 @@ describe 'General Step Defs', ->
           browser.driver.executeScript "fixtures.cleanUp();"
 
         it 'should succeed if the element contains the expected text', ->
-          world.currentPage.testInput.sendKeys("Input Text")
+          element(By.css 'input').sendKeys("Input Text")
           executeStep 'the "Test Input" should contain the text "Input Text"', ->
             expect(currentStepResult.getStatus()).to.equal Cucumber.Status.PASSED
 
@@ -606,7 +652,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -651,7 +702,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           testSpan: element(By.css 'span#testSpan')
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with the element displayed', ->
 
@@ -730,7 +786,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           testInput: $ 'input#testInput'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('<input id=\"testInput\" placeholder=\"Test Placeholder\" />');"
@@ -785,7 +846,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           testButton: $ 'button#testButton'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with enabled button', ->
 
@@ -848,7 +914,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           timeZoneSelect: $ 'select#timezone'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       beforeEach ->
         browser.driver.executeScript "fixtures.set('
@@ -896,7 +967,12 @@ describe 'General Step Defs', ->
         world = new World ->
         world.currentPage =
           testCheckbox: $ 'input#testCheckbox'
-        ast_tree_walker.setWorld world
+        sandbox.stub(supportCodeLibrary, 'instantiateNewWorld').returns world
+        scenarioRunner = initScenarioRunner()
+
+      after ->
+        sandbox.restore()
+        scenarioRunner = initScenarioRunner()
 
       describe 'with a selected checkbox', ->
 
