@@ -299,15 +299,6 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 * Install [Firefox]
 * Run `npm install` to download dependencies.
 * Run `npm test` to lint all files and run the unit tests.
-    * This is also the default [Grunt] task
-
-## Running Unit Tests against a specific browser
-
-By default CukeFarm runs unit tests against Firefox. Follow these steps to explicitly test against a particular browser:
-
-* Install the correct browser
-* Run `npm install` to download dependencies.
-* Run `npm run-script test-<browser>` where `<browser>` is either `firefox` or `chrome`
 
 [Cucumber]:https://www.npmjs.com/package/cucumber
 [Protractor]:http://angular.github.io/protractor
@@ -318,4 +309,3 @@ By default CukeFarm runs unit tests against Firefox. Follow these steps to expli
 [WebDriver Page Object]:https://code.google.com/p/selenium/wiki/PageObjects
 [node-globules]:https://github.com/cowboy/node-globule
 [Firefox]:https://www.mozilla.org/en-US/
-[Grunt]:http://gruntjs.com

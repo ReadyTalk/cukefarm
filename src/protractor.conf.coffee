@@ -11,7 +11,6 @@ module.exports.config =
 
   cucumberOpts:
     require: [path.resolve './node_modules/cukefarm/lib/step_definitions/GeneralStepDefs.js']
-    tags: []
     format: 'pretty'
 
   onPrepare: ->
