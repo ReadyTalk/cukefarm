@@ -36,7 +36,7 @@
     return wdUpdate.on('close', function(code) {
 
       var protractor;
-      protractor = spawn('protractor', [path.join(__dirname, '..', 'spec/conf/protractor.spec.conf.coffee')]);
+      protractor = spawn('protractor', [path.join(__dirname, '..', 'spec/conf/protractor.spec.conf.js')]);
 
       protractor.stdout.on('data', function(data) {
         return process.stdout.write(data);
