@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 
 describe('transform', function() {
   var transform;
+
   before(function() {
     transform = new Transform();
   })
