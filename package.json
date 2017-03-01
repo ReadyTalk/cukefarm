@@ -4,8 +4,8 @@
   "description": "An opinionated template for writing Cucumber tests with Protractor",
   "main": "index.js",
   "engines": {
-    "node": ">= 4.3.0",
-    "npm": "3.10.x"
+    "node": ">= 6.10.0",
+    "npm": ">= 3.10.10"
   },
   "repository": {
     "type": "git",
@@ -19,21 +19,21 @@
   "author": "Nathan Thompson",
   "license": "MIT",
   "devDependencies": {
-    "coffee-script": "^1.10.0",
-    "coffeelint": "^1.15.7",
-    "cucumber": "^1.2.1",
+    "@darrinholst/protractor-cucumber-framework": "^1.0.1",
+    "cucumber": "^2.0.0-rc.7",
     "docha": "^0.1.2",
-    "express": "^4.14.0",
+    "express": "^4.14.1",
     "js-fixtures": "^1.5.3",
-    "mocha": "^3.0.0",
-    "protractor": "^4.0.2",
+    "mocha": "^3.2.0",
+    "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^0.6.0",
-    "sinon": "^1.17.5",
-    "sinon-as-promised": "^4.0.2"
+    "sinon": "^1.17.7",
+    "sinon-as-promised": "^4.0.2",
+    "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
-    "cucumber": "^1.0.0",
-    "protractor": "^4.0.0",
+    "cucumber": "^2.0.0",
+    "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^0.6.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
@@ -45,10 +45,8 @@
   ],
   "scripts": {
     "ci": "npm run lint && npm run test && npm run generateApiDocs",
-    "compile": "coffee -o lib -c src",
-    "generateApiDocs": "coffee util/generateApiDocs.coffee",
+    "generateApiDocs": "node util/generateApiDocs.js",
     "lint": "coffeelint -f coffeelint.json src",
-    "prepublish": "npm run compile",
-    "test": "npm run compile && coffee util/runProtractorTests.coffee"
+    "test": "node util/runProtractorTests.js"
   }
 }
