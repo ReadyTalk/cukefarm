@@ -28,7 +28,8 @@
     "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^0.6.0",
     "sinon": "^1.17.7",
-    "sinon-as-promised": "^4.0.2"
+    "sinon-as-promised": "^4.0.2",
+    "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
     "cucumber": "^2.0.0",
