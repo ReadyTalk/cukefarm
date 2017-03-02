@@ -15,4 +15,6 @@ config.specs = [
 
 config.allScriptsTimeout = 20000;
 
+config.directConnect = true;
+
 exports.config = config;
