@@ -26,7 +26,7 @@ describe('I click the "___" link', function() {
     });
 
     it('should match an empty element type', function() {
-      verifyStepMatch('I click the "Search"');
+      verifyStepMatch('I click the "Search Button"');
     });
 
     it('should capture the element name and type', function() {

@@ -51,5 +51,9 @@ describe('transform', function() {
     it('should capitalize the first letter of other strings and pass them through', function() {
       expect(transform.elementTypeToVariableName('button')).to.equal('Button');
     });
+
+    it('should trim white space', function() {
+      expect(transform.elementTypeToVariableName(' button ')).to.equal('Button');
+    });
   });
 });

@@ -1,0 +1,114 @@
+describe('"___" should have the text "___"', function() {
+  describe('regex', function() {
+    before(function() {
+      stepPattern = '(the |)"{name:elementName}"{type:elementType} {expectation:shouldToBoolean} (have|contain) the text "{text:captureString}"';
+    });
+
+    it('should match \'the "Test Field" should...\'', function() {
+      verifyStepMatch('the "Test Field" should contain the text "Text String"');
+    });
+
+    it('should match \'the "Test Field" should not...\'', function() {
+      verifyStepMatch('the "Test Field" should not contain the text "Text String"');
+    });
+
+    it('should match \'"Test Field" should...\'', function() {
+      verifyStepMatch('"Test Field" should contain the text "Text String"');
+    });
+
+    it('should match \'..."Test Field" should contain...\'', function() {
+      verifyStepMatch('the "Test Field" should contain the text "Text String"');
+    });
+
+    it('should match \'..."Test Field" should have...\'', function() {
+      verifyStepMatch('the "Test Field" should have the text "Text String"');
+    });
+
+    it('should capture the element name, element type, expectation, and text string', function() {
+      verifyStepCaptures('the "Test" field should contain the text "Text String"', 'Test', ' field', 'should', 'Text String');
+    });
+
+    it('should capture the element name, text string, and a blank string if no element type is provided', function() {
+      verifyStepCaptures('the "Test Field" should contain the text "Text String"', 'Test Field', '', 'should', 'Text String');
+    });
+
+    it('should not capture "the" or "contain"', function() {
+      verifyStepDoesNotCapture('the "Test Field" should contain the text "Text String"', 'the', 'contain');
+    });
+  });
+
+  describe('execution', function() {
+    before(function() {
+      world.currentPage = {
+        testSpan: $('span#testSpan'),
+        testInput: $('input#testInput')
+      };
+    });
+
+    describe('with a span', function() {
+      beforeEach(function() {
+        browser.driver.executeScript("fixtures.set('<span id=\"testSpan\">Span Text</span>');");
+        return browser.driver.switchTo().frame('js-fixtures');
+      });
+
+      afterEach(function() {
+        browser.driver.switchTo().defaultContent();
+        return browser.driver.executeScript("fixtures.cleanUp();");
+      });
+
+      it('should succeed if the element contains the expected text', function() {
+        return executeStep('the "Test Span" should contain the text "Span Text"', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+
+      it('should fail if the element does not contain the expected text', function() {
+        return executeStep('the "Test Span" should contain the text "Fake Text"', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+        });
+      });
+    });
+
+    describe('with an input', function() {
+      beforeEach(function() {
+        browser.driver.executeScript("fixtures.set('<input id=\"testInput\"/>');");
+        return browser.driver.switchTo().frame('js-fixtures');
+      });
+
+      afterEach(function() {
+        browser.driver.switchTo().defaultContent();
+        return browser.driver.executeScript("fixtures.cleanUp();");
+      });
+
+      describe('and a "should" expectation', function() {
+        it('should succeed if the element contains the expected text', function() {
+          element(By.css('input')).sendKeys("Input Text");
+          return executeStep('the "Test Input" should contain the text "Input Text"', function() {
+            expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+          });
+        });
+
+        it('should fail if the element does not contain the expected text', function() {
+          return executeStep('the "Test Input" should contain the text "Input Text"', function() {
+            expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+          });
+        });
+      });
+
+      describe('and a "should not" expectation', function() {
+        it('should fail if the element contains the expected text', function() {
+          element(By.css('input')).sendKeys("Input Text");
+          return executeStep('the "Test Input" should not contain the text "Input Text"', function() {
+            expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+          });
+        });
+
+        it('should fail if the element does not contain the expected text', function() {
+          return executeStep('the "Test Input" should not contain the text "Input Text"', function() {
+            expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+          });
+        });
+      });
+    });
+  });
+});

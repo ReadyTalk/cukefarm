@@ -9,7 +9,7 @@ config.capabilities = {
 config.framework = 'mocha';
 
 config.specs = [
-  '../generalStepDefs/initGlobals.js',
+  '../generalStepDefs/support/initGlobals.js',
   '../**/*.spec.js'
 ];
 

@@ -11,9 +11,9 @@ chai.use(sinonChai);
 global.expect = chai.expect;
 
 // Set up supportCodeLibrary
-require('../../lib/step_definitions/GeneralStepDefs');
-require('../../lib/support/Transform');
-require('../../lib/support/World');
+require('../../../lib/step_definitions/GeneralStepDefs');
+require('../../../lib/support/Transform');
+require('../../../lib/support/World');
 
 // Init Cucumber infrastructure
 global.supportCodeLibrary = Cucumber.SupportCodeLibraryBuilder.build({
@@ -21,7 +21,7 @@ global.supportCodeLibrary = Cucumber.SupportCodeLibraryBuilder.build({
   fns: Cucumber.getSupportCodeFns()
 });
 
-global.ScenarioRunner = require('../../node_modules/cucumber/lib/runtime/scenario_runner');
+global.ScenarioRunner = require('../../../node_modules/cucumber/lib/runtime/scenario_runner');
 global.scenarioRunner = new ScenarioRunner.default({
   eventBroadcaster: {},
   options: {},
