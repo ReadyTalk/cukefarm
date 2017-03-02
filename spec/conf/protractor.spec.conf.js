@@ -15,6 +15,6 @@ config.specs = [
 
 config.allScriptsTimeout = 20000;
 
-config.directConnect = true;
+config.seleniumAddress = 'http://localhost:4444/wd/hub';
 
 exports.config = config;
