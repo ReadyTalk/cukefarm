@@ -7,8 +7,7 @@ var ElementHelper = require('../lib/support/ElementHelper');
 var World = require('../lib/support/World');
 
 describe('elementHelper', function() {
-  var elementHelper;
-  elementHelper = new ElementHelper();
+  var elementHelper = new ElementHelper();
 
   before(function() {
     browser.get('http://localhost:9001/');

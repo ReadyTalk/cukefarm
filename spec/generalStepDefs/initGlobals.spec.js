@@ -1,9 +1,9 @@
+// Require dependencies
 global.Cucumber = require('cucumber');
 global.sinon = require('sinon');
 global.Promise = require('q');
 global.sinonAsPromised = require('sinon-as-promised')(Promise);
 global.path = require('path');
-var World = require('../lib/support/World.js');
 global.uuidV4 = require('uuid/v4');
 
 global.chai = require('chai');
@@ -11,16 +11,18 @@ var sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 global.expect = chai.expect;
 
-require('../lib/step_definitions/GeneralStepDefs');
-require('../lib/support/Transform');
-require('../lib/support/World');
+// Set up supportCodeLibrary
+require('../../lib/step_definitions/GeneralStepDefs');
+require('../../lib/support/Transform');
+require('../../lib/support/World');
 
+// Init Cucumber infrastructure
 global.supportCodeLibrary = Cucumber.SupportCodeLibraryBuilder.build({
   cwd: process.cwd(),
   fns: Cucumber.getSupportCodeFns()
 });
 
-global.ScenarioRunner = require('../node_modules/cucumber/lib/runtime/scenario_runner');
+global.ScenarioRunner = require('../../node_modules/cucumber/lib/runtime/scenario_runner');
 global.scenarioRunner = new ScenarioRunner.default({
   eventBroadcaster: {},
   options: {},
@@ -29,6 +31,7 @@ global.scenarioRunner = new ScenarioRunner.default({
 });
 global.world = scenarioRunner.world;
 
+// Init helper functions
 global.currentStepResult = null;
 global.runtime = null;
 global.sandbox = sinon.sandbox.create();
@@ -93,14 +96,3 @@ global.verifyStepDoesNotCapture = function() {
     expect(regexp.exec(stepName)).to.not.contain(arg);
   })
 };
-
-describe('', function() {
-  before(function() {
-    browser.get('http://localhost:9001/');
-    return browser.manage().timeouts().implicitlyWait(100);
-  });
-
-  beforeEach(function() {
-    currentStepResult = {};
-  });
-});
