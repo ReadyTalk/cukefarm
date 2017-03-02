@@ -1,6 +1,11 @@
 describe('I click the "___" link', function() {
   describe('regex', function() {
     before(function() {
+      browser.get('http://localhost:9001/');
+      return browser.manage().timeouts().implicitlyWait(100);
+    });
+
+    before(function() {
       stepPattern = 'I click the "{name:elementName}"{type:elementType}';
     });
 

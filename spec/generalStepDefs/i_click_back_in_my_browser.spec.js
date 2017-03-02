@@ -1,6 +1,11 @@
 describe('I navigate backwards in my browser', function() {
   describe('regex', function() {
     before(function() {
+      browser.get('http://localhost:9001/');
+      return browser.manage().timeouts().implicitlyWait(100);
+    });
+
+    before(function() {
       stepPattern = 'I (navigate|click) (backwards|back) in my browser';
     });
 

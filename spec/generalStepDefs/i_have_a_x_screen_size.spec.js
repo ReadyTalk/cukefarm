@@ -1,6 +1,11 @@
 describe('I have a ___x___ screen size', function() {
   describe('regex', function() {
     before(function() {
+      browser.get('http://localhost:9001/');
+      return browser.manage().timeouts().implicitlyWait(100);
+    });
+
+    before(function() {
       stepPattern = 'I (have|change to|resize to|rotate to) a {width:int}x{height:int} screen size';
     });
 

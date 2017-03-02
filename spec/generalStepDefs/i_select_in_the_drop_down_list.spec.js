@@ -1,6 +1,11 @@
 describe('I select "___" in the "___" drop down list', function() {
   describe('regex', function() {
     before(function() {
+      browser.get('http://localhost:9001/');
+      return browser.manage().timeouts().implicitlyWait(100);
+    });
+
+    before(function() {
       stepPattern = 'I select "{optionText:captureString}" in the "{name:elementName}"{type:elementType}';
     });
 

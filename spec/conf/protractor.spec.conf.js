@@ -8,7 +8,10 @@ config.capabilities = {
 
 config.framework = 'mocha';
 
-config.specs = '../**/*.spec.js';
+config.specs = [
+  '../generalStepDefs/initGlobals.js',
+  '../**/*.spec.js'
+];
 
 config.allScriptsTimeout = 20000;
 

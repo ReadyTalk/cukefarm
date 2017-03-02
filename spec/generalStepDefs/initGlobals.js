@@ -1,10 +1,9 @@
 // Require dependencies
 global.Cucumber = require('cucumber');
 global.sinon = require('sinon');
-global.Promise = require('q');
+var Promise = require('q');
 global.sinonAsPromised = require('sinon-as-promised')(Promise);
 global.path = require('path');
-global.uuidV4 = require('uuid/v4');
 
 global.chai = require('chai');
 var sinonChai = require('sinon-chai');

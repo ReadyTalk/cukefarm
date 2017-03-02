@@ -1,5 +1,10 @@
 describe('the title should equal "___"', function() {
   describe('regex', function() {
+    before(function() {
+      browser.get('http://localhost:9001/');
+      return browser.manage().timeouts().implicitlyWait(100);
+    });
+
     beforeEach(function() {
       currentStepResult = {};
     });
