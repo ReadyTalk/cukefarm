@@ -26,7 +26,7 @@
     "express": "^4.14.0",
     "js-fixtures": "^1.5.3",
     "mocha": "^3.0.0",
-    "protractor": "^4.0.2",
+    "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^0.6.0",
     "sinon": "^1.17.5",
     "sinon-as-promised": "^4.0.2"
