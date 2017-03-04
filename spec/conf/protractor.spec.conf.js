@@ -3,7 +3,7 @@ var config;
 config = require('../../lib/protractor.conf.js').config;
 
 config.capabilities = {
-  browserName: 'firefox'
+  browserName: 'chrome'
 };
 
 config.framework = 'mocha';

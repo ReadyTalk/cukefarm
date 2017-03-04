@@ -30,13 +30,11 @@ describe('the "___" should be displayed', function() {
 
     describe('with the element displayed', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<span id=\"testSpan\">Span Text</span>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<span id=\"testSpan\">Span Text</span>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('span#testSpan').remove();");
       });
 
       it('should succeed if it expects the element to be displayed', function() {
@@ -54,13 +52,11 @@ describe('the "___" should be displayed', function() {
 
     describe('without the element displayed', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<span id=\"testSpan\" style=\"display:none;\">Span Text</span>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<span id=\"testSpan\" style=\"display:none;\">Span Text</span>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('span#testSpan').remove();");
       });
 
       it('should succeed if it expects the element to not be displayed', function() {
@@ -86,6 +82,30 @@ describe('the "___" should be displayed', function() {
       it('should fail if it expects the element to be displayed', function() {
         return executeStep('the "Test Span" should be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+        });
+      });
+    });
+  });
+
+  describe('timing', function() {
+    before(function() {
+      world.currentPage = {
+        testSpan: element(By.css('span#testSpan'))
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove();");
+    });
+
+    it('should wait for the element to be displayed before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append('<span id=\"testSpan\">Span Text</span>'); }, 200 )").then(() => {
+        return executeStep('the "Test Span" should be displayed', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
     });

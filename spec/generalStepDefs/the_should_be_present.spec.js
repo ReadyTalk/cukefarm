@@ -39,13 +39,11 @@ describe('the "___" should be present', function() {
 
     describe('with element present', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<button id=\"testButton\">');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<button id=\"testButton\">');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('button#testButton').remove();");
       });
 
       it('should succeed if it expects the element to be present', function() {
@@ -70,6 +68,30 @@ describe('the "___" should be present', function() {
 
       it('should succeed if it expects the element not to be present', function() {
         return executeStep('the "Button" should not be present', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+    });
+  });
+
+  describe('timing', function() {
+    before(function() {
+      world.currentPage = {
+        button: $('button#testButton')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('button#testButton').remove();");
+    });
+
+    it('should wait for the element to be present before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append('<button id=\"testButton\">'); }, 200 )").then(() => {
+        return executeStep('the "Button" should be present', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });

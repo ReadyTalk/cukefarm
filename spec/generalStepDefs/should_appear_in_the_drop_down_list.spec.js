@@ -29,13 +29,11 @@ describe('"___" should appear in the "___" drop down list', function() {
     });
 
     beforeEach(function() {
-      browser.driver.executeScript("fixtures.set(' <select id=\"timezone\"> <option selected>Eastern Standard</option> <option>Mountain Standard</option> <option>Central Standard</option> </select>');");
-      return browser.driver.switchTo().frame('js-fixtures');
+      return browser.driver.executeScript("$('body').append(' <select id=\"timezone\"> <option selected>Eastern Standard</option> <option>Mountain Standard</option> <option>Central Standard</option> </select>');");
     });
 
     afterEach(function() {
-      browser.driver.switchTo().defaultContent();
-      return browser.driver.executeScript("fixtures.cleanUp();");
+      return browser.driver.executeScript("$('select#timezone').remove();");
     });
 
     describe('with the "should" expectation', function() {
@@ -61,6 +59,30 @@ describe('"___" should appear in the "___" drop down list', function() {
 
       it('should succeed if the expected option is not in the drop down list', function() {
         return executeStep('"Pacific Standard" should not appear in the "Time Zone" drop down list', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+    });
+  });
+
+  describe('timing', function() {
+    before(function() {
+      world.currentPage = {
+        timeZoneSelect: $('select#timezone')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove();");
+    });
+
+    it('should wait for the drop down list to be present before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append(' <select id=\"timezone\"> <option selected>Eastern Standard</option> <option>Mountain Standard</option> <option>Central Standard</option> </select>'); }, 200 )").then(() => {
+        return executeStep('"Mountain Standard" should appear in the "Time Zone" drop down list', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });

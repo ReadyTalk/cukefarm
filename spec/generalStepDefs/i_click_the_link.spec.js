@@ -40,6 +40,8 @@ describe('I click the "___" link', function() {
 
   describe('execution', function() {
     beforeEach(function() {
+      sandbox.stub(browser, 'wait').resolves();
+
       world.currentPage = {
         searchButton: {
           click: sinon.stub()
@@ -54,6 +56,30 @@ describe('I click the "___" link', function() {
     it('should click the element', function() {
       return executeStep('I click the "Search" button', function() {
         expect(world.currentPage.searchButton.click).to.have.been.calledOnce;
+      });
+    });
+  });
+
+  describe('timing', function() {
+    beforeEach(function() {
+      world.currentPage = {
+        searchButton: $('button#search')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove()");
+    });
+
+    it('should wait for the button to appear before clicking', function() {
+      return browser.driver.executeScript("setTimeout( function() { $(\"div#test\").append('<button id=\"search\"></button>'); }, 200 )").then(() => {
+        return executeStep('I click the "Search" button', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
       });
     });
   });

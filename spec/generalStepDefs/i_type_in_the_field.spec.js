@@ -28,6 +28,8 @@ describe('I type "___" in the "___" field', function() {
 
   describe('execution', function() {
     beforeEach(function() {
+      sandbox.stub(browser, 'wait').resolves();
+
       world.currentPage = {
         nameField: {
           clear: sinon.stub(),
@@ -45,6 +47,30 @@ describe('I type "___" in the "___" field', function() {
         expect(world.currentPage.nameField.clear).to.have.been.calledOnce;
         expect(world.currentPage.nameField.sendKeys).to.have.been.calledOnce;
         expect(world.currentPage.nameField.sendKeys).to.have.been.calledWithExactly('First');
+      });
+    });
+  });
+
+  describe('timing', function() {
+    beforeEach(function() {
+      world.currentPage = {
+        nameField: $('input#name')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove()");
+    });
+
+    it('should wait for the input to appear before typing', function() {
+      return browser.driver.executeScript("setTimeout( function() { $(\"div#test\").append('<input id=\"name\" type=\"text\"></input>'); }, 200 )").then(() => {
+        return executeStep('I type "First" in the "Name" field', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
       });
     });
   });

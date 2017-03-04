@@ -30,13 +30,11 @@ describe('the "___" should be checked', function() {
 
     describe('with a selected checkbox', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<input id=\"testCheckbox\" type=\"checkbox\" checked/>');");
-        browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<input id=\"testCheckbox\" type=\"checkbox\" checked/>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('input#testCheckbox').remove();");
       });
 
       it('should succeed if it expects the checkbox to be selected', function() {
@@ -54,13 +52,11 @@ describe('the "___" should be checked', function() {
 
     describe('with an unselected checkbox', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<input id=\"testCheckbox\" type=\"checkbox\"/>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<input id=\"testCheckbox\" type=\"checkbox\"/>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('input#testCheckbox').remove();");
       });
 
       it('should fail if it expects the checkbox to be selected', function() {
@@ -71,6 +67,30 @@ describe('the "___" should be checked', function() {
 
       it('should succeed if it expects the checkbox to not be selected', function() {
         return executeStep('the "Test" checkbox should not be checked', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+    });
+  });
+
+  describe('execution', function() {
+    before(function() {
+      world.currentPage = {
+        testCheckbox: $('input#testCheckbox')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove();");
+    });
+
+    it('should succeed if it expects the checkbox to be selected', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append('<input id=\"testCheckbox\" type=\"checkbox\" checked/>'); }, 200 )").then(() => {
+        return executeStep('the "Test" checkbox should be checked', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });

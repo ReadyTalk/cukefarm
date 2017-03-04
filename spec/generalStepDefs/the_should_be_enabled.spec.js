@@ -46,12 +46,11 @@ describe('the "___" should be enabled', function() {
 
     describe('with enabled button', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<button id=\"testButton\">Button</button>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<button id=\"testButton\">Button</button>');");
       });
+
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('button#testButton').remove();");
       });
 
       it('should succeed if it expects the button to be enabled', function() {
@@ -69,13 +68,11 @@ describe('the "___" should be enabled', function() {
 
     describe('with disabled button', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<button id=\"testButton\" disabled>Button</button>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<button id=\"testButton\" disabled>Button</button>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('button#testButton').remove();");
       });
 
       it('should fail if it expects the button to be enabled', function() {
@@ -86,6 +83,30 @@ describe('the "___" should be enabled', function() {
 
       it('should succeed if it expects the button to be disabled', function() {
         return executeStep('the "Test" button should not be enabled', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+    });
+  });
+
+  describe('timing', function() {
+    before(function() {
+      world.currentPage = {
+        testButton: $('button#testButton')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove();");
+    });
+
+    it('should wait for the element to be present before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append('<button id=\"testButton\">Button</button>'); }, 200 )").then(() => {
+        return executeStep('the "Test" button should be enabled', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });

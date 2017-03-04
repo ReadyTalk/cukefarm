@@ -47,13 +47,11 @@ describe('"___" should have the text "___"', function() {
 
     describe('with a span', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<span id=\"testSpan\">Span Text</span>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<span id=\"testSpan\">Span Text</span>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('span#testSpan').remove();");
       });
 
       it('should succeed if the element contains the expected text', function() {
@@ -71,13 +69,11 @@ describe('"___" should have the text "___"', function() {
 
     describe('with an input', function() {
       beforeEach(function() {
-        browser.driver.executeScript("fixtures.set('<input id=\"testInput\"/>');");
-        return browser.driver.switchTo().frame('js-fixtures');
+        return browser.driver.executeScript("$('body').append('<input id=\"testInput\"/>');");
       });
 
       afterEach(function() {
-        browser.driver.switchTo().defaultContent();
-        return browser.driver.executeScript("fixtures.cleanUp();");
+        return browser.driver.executeScript("$('input#testInput').remove();");
       });
 
       describe('and a "should" expectation', function() {
@@ -107,6 +103,31 @@ describe('"___" should have the text "___"', function() {
           return executeStep('the "Test Input" should not contain the text "Input Text"', function() {
             expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
           });
+        });
+      });
+    });
+  });
+
+  describe('timing', function() {
+    before(function() {
+      world.currentPage = {
+        testSpan: $('span#testSpan'),
+        testInput: $('input#testInput')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('button#testButton').remove();");
+    });
+
+    it('should wait for the element to be present before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('body').append('<span id=\"testSpan\">Span Text</span>'); }, 200 )").then(() => {
+        return executeStep('the "Test Span" should contain the text "Span Text"', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
     });

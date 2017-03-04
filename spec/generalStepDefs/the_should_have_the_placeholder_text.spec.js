@@ -33,7 +33,7 @@ describe('the "___" should have the placeholder text "___"', function() {
     });
   });
 
-  describe('execution', function() {
+  describe('timing', function() {
     before(function() {
       world.currentPage = {
         testInput: $('input#testInput')
@@ -41,13 +41,11 @@ describe('the "___" should have the placeholder text "___"', function() {
     });
 
     beforeEach(function() {
-      browser.driver.executeScript("fixtures.set('<input id=\"testInput\" placeholder=\"Test Placeholder\" />');");
-      return browser.driver.switchTo().frame('js-fixtures');
+      return browser.driver.executeScript("$('body').append('<input id=\"testInput\" placeholder=\"Test Placeholder\" />');");
     });
 
     afterEach(function() {
-      browser.driver.switchTo().defaultContent();
-      return browser.driver.executeScript("fixtures.cleanUp();");
+      return browser.driver.executeScript("$('input#testInput').remove();");
     });
 
     describe('with the "should" expectation', function() {
@@ -73,6 +71,30 @@ describe('the "___" should have the placeholder text "___"', function() {
 
       it('should fail if the element does not contain the expected placeholder text', function() {
         return executeStep('the "Test Input" should not have the placeholder text "Fake Placeholder"', function() {
+          expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
+        });
+      });
+    });
+  });
+
+  describe('execution', function() {
+    before(function() {
+      world.currentPage = {
+        testInput: $('input#testInput')
+      };
+    });
+
+    beforeEach(function() {
+      return browser.driver.executeScript("$('body').append('<div id=\"test\"></div>')");
+    });
+
+    afterEach(function() {
+      return browser.driver.executeScript("$('div#test').remove();");
+    });
+
+    it('should wait for the element to be displayed before verifying', function() {
+      return browser.driver.executeScript("setTimeout( function() { $('div#test').append('<input id=\"testInput\" placeholder=\"Test Placeholder\" />'); }, 200 )").then(() => {
+        return executeStep('the "Test Input" should have the placeholder text "Test Placeholder"', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
