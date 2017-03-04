@@ -1,16 +1,6 @@
-(() => {
-  var child_process, execSync;
+var child_process = require('child_process');
+var execSync = child_process.execSync;
 
-  child_process = require('child_process');
-
-  execSync = child_process.execSync;
-
-  execSync('coffee -o .tmp -c spec/*.coffee');
-
-  execSync("docha -p '.tmp/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _");
-
-  execSync("docha -p '.tmp/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md' -e _");
-
-  execSync("docha -p '.tmp/transform.spec.js' -o 'docs/transform.md' -e _");
-
-})();
+execSync("docha -p 'lib/elementHelper.spec.js' -o 'docs/elementHelper.md' -e _");
+execSync("docha -p 'lib/generalStepDefs.spec.js' -o 'docs/generalStepDefs.md' -e _");
+execSync("docha -p 'lib/transform.spec.js' -o 'docs/transform.md' -e _");

@@ -46,7 +46,6 @@
   "scripts": {
     "ci": "npm run lint && npm run test && npm run generateApiDocs",
     "generateApiDocs": "node util/generateApiDocs.js",
-    "lint": "coffeelint -f coffeelint.json src",
     "test": "node util/runProtractorTests.js",
     "webdriverUpdate": "webdriver-manager update"
   }
