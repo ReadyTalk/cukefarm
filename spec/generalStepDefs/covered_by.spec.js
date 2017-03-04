@@ -1,4 +1,6 @@
 describe('___ (covered by ___)', function() {
+  this.timeout(6000);
+
   before(function() {
     browser.get('http://localhost:9001/');
     return browser.manage().timeouts().implicitlyWait(100);

@@ -1,4 +1,6 @@
 describe('I have a ___x___ screen size', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       browser.get('http://localhost:9001/');

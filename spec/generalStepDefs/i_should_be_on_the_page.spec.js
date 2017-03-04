@@ -1,4 +1,6 @@
 describe('I should be on the "___" page', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       stepPattern = 'I (should be on|reach|am taken to) the "{pageName:captureString}" page';

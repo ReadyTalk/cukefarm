@@ -1,4 +1,6 @@
 describe('"___" should have the text "___"', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       stepPattern = '(the |)"{name:elementName}"{type:elementType} {expectation:shouldToBoolean} (have|contain) the text "{text:captureString}"';

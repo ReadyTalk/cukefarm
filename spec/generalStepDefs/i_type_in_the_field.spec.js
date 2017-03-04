@@ -1,4 +1,6 @@
 describe('I type "___" in the "___" field', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       browser.get('http://localhost:9001/');

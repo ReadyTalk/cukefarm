@@ -1,4 +1,6 @@
 describe('the title should equal "___"', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       browser.get('http://localhost:9001/');

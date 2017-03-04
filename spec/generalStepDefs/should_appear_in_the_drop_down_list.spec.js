@@ -1,4 +1,6 @@
 describe('"___" should appear in the "___" drop down list', function() {
+  this.timeout(6000);
+
   describe('regex', function() {
     before(function() {
       stepPattern = '"{option:captureString}" {expectation:shouldToBoolean} appear in the "{name:elementName}"{type:elementType}';
