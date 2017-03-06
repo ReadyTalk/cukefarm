@@ -93,20 +93,21 @@ Note: The above sample works, but it requires you to update the map every time y
 * Create a file called `World.js`
 * Use the `require` function to import CukeFarm
 * Use the `require` function to import your Page Object Map
+* Use the `require` function to import the `defineSupportCode` function from Cucumber
 * Set the pageObjectMap property of the CukeFarm World _prototype_ to your Page Object Map
-    * You must set this on the prototype because Cucumber.js actually instantiates the World itself using a Constructor function
-* Set the CukeFarm World object as the World property on the module exports object
-* In any Step Definition file that needs access to the World, include the line `this.World = require('path/to/your/World').World`
+    * You must set this on the prototype because Cucumber actually instantiates the World itself using a Constructor function
+* Call the `setWorldConstructor` function inside of `defineSupportCode` and pass it the `World` constructor
 
 Below is a sample `World.js` file:
 
-    # World.js
-
     var World = require('cukefarm').World;
+    var {defineSupportCode} = require('cucumber');
 
     World.prototype.pageObjectMap = require('./PageObjectMap');
 
-    module.exports.World = World;
+    defineSupportCode(function({setWorldConstructor}) {
+      setWorldConstructor(World);
+    });
 
 ### Why use a Page Object Map?
 
@@ -277,6 +278,10 @@ CukeFarm provides helper functions on the following objects that are defined on 
 ## `transform` Object
 
 The `transform` object contains functions to transform strings that were captured by Step Names into other data types to be used in the Step Definition.
+
+## Custom Transforms
+
+All functions provided by the `transform` object are also provided as custom transforms so that they can be direcly applied to capture groups when using Cucumber Expressions.
 
 ## `elementHelper` Object
 
