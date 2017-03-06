@@ -1,6 +1,6 @@
 var config;
 
-config = require('../../lib/protractor.conf.js').config;
+config = require('../../lib/protractor.conf.js');
 
 config.capabilities = {
   browserName: 'firefox'
