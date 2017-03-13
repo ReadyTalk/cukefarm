@@ -1,5 +1,5 @@
-World = require('./lib/support/World.js').World;
-config = require('./lib/protractor.conf.js').config;
+World = require('./lib/support/World');
+config = require('./lib/protractor.conf');
 
 module.exports = {
   World: World,

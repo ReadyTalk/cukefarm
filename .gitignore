@@ -1,7 +1,6 @@
 node_modules/
 .tmp/
 spec/test_app/scripts/main.js
-lib/
 npm-debug.log
 
 .idea/
