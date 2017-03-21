@@ -20,7 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "^2.0.0-rc.7",
+    "cucumber": "^2.0.0-rc.9",
     "docha": "^0.1.2",
     "express": "^4.14.1",
     "js-fixtures": "^1.5.3",
@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "^2.0.0",
+    "cucumber": "^2.0.0-rc.9",
     "protractor": "^5.0.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
