@@ -1,18 +1,18 @@
 describe('I am on the "___" page', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      browser.get('http://localhost:9001/');
-      return browser.manage().timeouts().implicitlyWait(100);
+      stepPattern = 'I (am on)(go to) the "{captureString}" page';
     });
 
     beforeEach(function() {
       currentStepResult = {};
-    });
-
-    before(function() {
-      return stepPattern = 'I (am on|go to) the "{pageName:captureString}" page';
     });
 
     it('should match "I am on..."', function() {

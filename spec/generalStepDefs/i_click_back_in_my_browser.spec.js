@@ -1,14 +1,14 @@
 describe('I navigate backwards in my browser', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      browser.get('http://localhost:9001/');
-      return browser.manage().timeouts().implicitlyWait(100);
-    });
-
-    before(function() {
-      stepPattern = 'I (navigate|click) (backwards|back) in my browser';
+      stepPattern = 'I navigate/click backwards/back in my browser';
     });
 
     it('should match "I navigate..."', function() {

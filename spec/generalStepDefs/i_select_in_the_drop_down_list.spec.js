@@ -1,14 +1,14 @@
 describe('I select "___" in the "___" drop down list', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      browser.get('http://localhost:9001/');
-      return browser.manage().timeouts().implicitlyWait(100);
-    });
-
-    before(function() {
-      stepPattern = 'I select "{optionText:captureString}" in the "{name:elementName}"{type:elementType}';
+      stepPattern = 'I select "{captureString}" in the "{elementName}"{elementType}';
     });
 
     it('should match \'I select "Mountain Standard" in the "Time Zone" drop down list\'', function() {
