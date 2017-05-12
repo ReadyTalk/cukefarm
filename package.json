@@ -1,6 +1,6 @@
 {
   "name": "cukefarm",
-  "version": "5.0.0-rc.1",
+  "version": "5.0.0-rc.2",
   "description": "An opinionated template for writing Cucumber tests with Protractor",
   "main": "index.js",
   "engines": {
