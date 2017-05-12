@@ -1,9 +1,14 @@
 describe('"___" should appear in the "___" drop down list', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      stepPattern = '"{option:captureString}" {expectation:shouldToBoolean} appear in the "{name:elementName}"{type:elementType}';
+      stepPattern = '"{captureString}" {shouldToBoolean} appear in the "{elementName}"{elementType}';
     });
 
     it('should match "...should appear..."', function() {

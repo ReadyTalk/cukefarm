@@ -40,7 +40,7 @@ global.lookupStepDefinition = function(stepName) {
   var stepDefinitions = supportCodeLibrary.stepDefinitions.filter((stepDefinition) => {
     return stepDefinition.matchesStepName({
       stepName: stepName,
-      transformLookup: supportCodeLibrary.transformLookup
+      parameterTypeRegistry: supportCodeLibrary.parameterTypeRegistry
     })
   });
 
@@ -57,7 +57,7 @@ global.executeStep = (stepName, verification, keyword) => {
     name: stepName
   }).then(function(stepResult) {
     currentStepResult = stepResult;
-    verification();
+    return verification();
   });
 };
 
@@ -77,7 +77,7 @@ global.verifyStepCaptures = function() {
   var args = [].slice.call(arguments, 1);
 
   var stepDef = lookupStepDefinition(stepName);
-  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.transformLookup)._regexp;
+  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._regexp;
 
   args.forEach(function(arg) {
     expect(regexp.exec(stepName)).to.contain(arg);
@@ -89,7 +89,7 @@ global.verifyStepDoesNotCapture = function() {
   var args = [].slice.call(arguments, 1);
 
   var stepDef = lookupStepDefinition(stepName);
-  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.transformLookup)._regexp;
+  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._regexp;
 
   args.forEach(function(arg) {
     expect(regexp.exec(stepName)).to.not.contain(arg);

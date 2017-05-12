@@ -1,9 +1,14 @@
 describe('"___" should be selected in the "___" drop down list', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      stepPattern = '"{text:captureString}" {expectation:shouldToBoolean} be (selected|displayed) in the "{name:elementName}"{type:elementType}';
+      stepPattern = '"{captureString}" {shouldToBoolean} be selected/displayed in the "{elementName}"{elementType}';
     });
 
     it('should match \'...should be selected...\'', function() {

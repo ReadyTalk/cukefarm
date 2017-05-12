@@ -1,9 +1,14 @@
 describe('I should be on the "___" page', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      stepPattern = 'I (should be on|reach|am taken to) the "{pageName:captureString}" page';
+      stepPattern = 'I (should be on)(reach)(am taken to) the "{captureString}" page';
     });
 
     it('should match "I should be on..."', function() {

@@ -1,14 +1,14 @@
 describe('I type "___" in the "___" field', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      browser.get('http://localhost:9001/');
-      return browser.manage().timeouts().implicitlyWait(100);
-    });
-
-    before(function() {
-      stepPattern = 'I type "{text:captureString}" in(to|) the "{name:elementName}"{type:elementType}';
+      stepPattern = 'I type "{captureString}" in(to) the "{elementName}"{elementType}';
     });
 
     it('should match "...in..."', function() {
