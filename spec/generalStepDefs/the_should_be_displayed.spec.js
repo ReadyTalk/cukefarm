@@ -79,7 +79,7 @@ describe('the "___" should be displayed', function() {
       });
     });
 
-    describe('without the element present', function() {
+    xdescribe('without the element present', function() {
       it('should succeed if it expects the element to not be displayed', function() {
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
