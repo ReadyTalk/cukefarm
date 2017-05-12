@@ -1,10 +1,11 @@
+# Required to install Chrome, see: http://blog.500tech.com/setting-up-travis-ci-to-run-tests-on-latest-google-chrome-version/
 sudo: required
 dist: trusty
 language: node_js
 node_js:
     - "6.9"
     - "6.10"
-    - "7.6"
+    - "7"
 before_install:
     - "export CHROME_BIN=/usr/bin/google-chrome"
     - "export DISPLAY=:99.0"
