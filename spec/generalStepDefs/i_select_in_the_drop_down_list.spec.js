@@ -41,11 +41,7 @@ describe('I select "___" in the "___" drop down list', function() {
 
     it('should select the correct option by its text from the correct drop-down', function() {
       return executeStep('I select "Mountain Standard" in the "Time Zone" drop down list', function() {
-        return Promise.all([
-          expect(element(By.cssContainingText('option', 'Eastern Standard')).isSelected()).to.eventually.equal(false),
-          expect(element(By.cssContainingText('option', 'Central Standard')).isSelected()).to.eventually.equal(false),
-          expect(element(By.cssContainingText('option', 'Mountain Standard')).isSelected()).to.eventually.equal(true)
-        ]);
+        return expect(element(By.cssContainingText('option', 'Mountain Standard')).isSelected()).to.eventually.equal(true)
       });
     });
   });
