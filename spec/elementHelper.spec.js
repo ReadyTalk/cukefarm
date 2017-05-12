@@ -10,8 +10,8 @@ describe('elementHelper', function() {
   var elementHelper = new ElementHelper();
 
   before(function() {
-    browser.get('http://localhost:9001/');
     browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
   });
 
   it('should exist on the World', function() {
