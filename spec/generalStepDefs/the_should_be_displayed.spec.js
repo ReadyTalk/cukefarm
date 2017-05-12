@@ -35,10 +35,6 @@ describe('the "___" should be displayed', function() {
       };
     });
 
-    afterEach(function() {
-      delete world.currentPage;
-    });
-
     describe('with the element displayed', function() {
       beforeEach(function() {
         return browser.driver.executeScript("$('body').append('<span id=\"testSpan\">Span Text</span>');");
@@ -84,6 +80,14 @@ describe('the "___" should be displayed', function() {
     });
 
     describe('without the element present', function() {
+      beforeEach(function() {
+        return browser.driver.executeScript("$('span#testSpan').remove();").then(() => {
+          world.currentPage = {
+            testSpan: element(By.css('span#testSpan'))
+          };
+        });
+      });
+
       it('should succeed if it expects the element to not be displayed', function() {
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
