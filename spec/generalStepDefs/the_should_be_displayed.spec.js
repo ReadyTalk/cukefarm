@@ -29,10 +29,14 @@ describe('the "___" should be displayed', function() {
   });
 
   describe('execution', function() {
-    before(function() {
+    beforeEach(function() {
       world.currentPage = {
         testSpan: element(By.css('span#testSpan'))
       };
+    });
+
+    afterEach(function() {
+      delete world.currentPage;
     });
 
     describe('with the element displayed', function() {
@@ -80,14 +84,6 @@ describe('the "___" should be displayed', function() {
     });
 
     describe('without the element present', function() {
-      before(function() {
-        return browser.wait(function() {
-          return world.currentPage.testSpan.isPresent().then(function(isPresent) {
-            return isPresent === false;
-          });
-        }, 3000);
-      });
-
       it('should succeed if it expects the element to not be displayed', function() {
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
