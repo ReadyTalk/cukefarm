@@ -79,7 +79,7 @@ describe('the "___" should be displayed', function() {
       });
     });
 
-    describe('without the element present', function() {
+    xdescribe('without the element present', function() {
       beforeEach(function() {
         return browser.driver.executeScript("$('span#testSpan').remove();").then(() => {
           world.currentPage = {
