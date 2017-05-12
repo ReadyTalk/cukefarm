@@ -1,9 +1,14 @@
 describe('the "___" should be enabled', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      stepPattern = 'the "{name:elementName}"{type:elementType} {expectation:shouldToBoolean} be enabled';
+      stepPattern = 'the "{elementName}"{elementType} {shouldToBoolean} be enabled';
     });
 
     it('should match \'the "___" button...\'', function() {

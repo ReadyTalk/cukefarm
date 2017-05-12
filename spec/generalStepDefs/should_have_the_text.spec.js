@@ -1,9 +1,14 @@
 describe('"___" should have the text "___"', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      stepPattern = '(the |)"{name:elementName}"{type:elementType} {expectation:shouldToBoolean} (have|contain) the text "{text:captureString}"';
+      stepPattern = '(the )"{elementName}"{elementType} {shouldToBoolean} have/contain the text "{captureString}"';
     });
 
     it('should match \'the "Test Field" should...\'', function() {

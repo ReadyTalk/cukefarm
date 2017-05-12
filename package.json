@@ -1,6 +1,6 @@
 {
   "name": "cukefarm",
-  "version": "5.0.0-rc.1",
+  "version": "5.0.0-rc.2",
   "description": "An opinionated template for writing Cucumber tests with Protractor",
   "main": "index.js",
   "engines": {
@@ -20,12 +20,12 @@
   "license": "MIT",
   "devDependencies": {
     "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "2.0.0-rc.7",
+    "cucumber": "^2.0.0-rc.9",
     "docha": "^0.1.2",
     "express": "^4.14.1",
     "js-fixtures": "^1.5.3",
     "mocha": "^3.2.0",
-    "protractor": "5.0.0",
+    "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^0.6.0",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.2",
@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "2.0.0-rc.7",
+    "cucumber": "^2.0.0-rc.9",
     "protractor": "^5.0.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
@@ -44,7 +44,7 @@
     "selenium"
   ],
   "scripts": {
-    "ci": "npm run lint && npm run test && npm run generateApiDocs",
+    "ci": "npm run test && npm run generateApiDocs",
     "generateApiDocs": "node util/generateApiDocs.js",
     "test": "node util/runProtractorTests.js",
     "webdriverUpdate": "webdriver-manager update"

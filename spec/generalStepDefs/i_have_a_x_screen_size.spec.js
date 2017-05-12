@@ -1,14 +1,14 @@
 describe('I have a ___x___ screen size', function() {
   this.timeout(6000);
 
+  before(function() {
+    browser.manage().timeouts().implicitlyWait(100);
+    return browser.get('http://localhost:9001/');
+  });
+
   describe('regex', function() {
     before(function() {
-      browser.get('http://localhost:9001/');
-      return browser.manage().timeouts().implicitlyWait(100);
-    });
-
-    before(function() {
-      stepPattern = 'I (have|change to|resize to|rotate to) a {width:int}x{height:int} screen size';
+      stepPattern = 'I (have)(change to)(resize to)(rotate to) a {int}x{int} screen size';
     });
 
     it('should match "I have..."', function() {
