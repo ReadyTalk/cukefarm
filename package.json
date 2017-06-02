@@ -19,21 +19,20 @@
   "author": "Nathan Thompson",
   "license": "MIT",
   "devDependencies": {
-    "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "^2.0.0-rc.9",
+    "cucumber": "^2.0.0",
     "docha": "^0.1.2",
     "express": "^4.14.1",
     "js-fixtures": "^1.5.3",
     "mocha": "^3.2.0",
     "protractor": "^5.0.0",
-    "protractor-cucumber-framework": "^0.6.0",
+    "protractor-cucumber-framework": "^3.0.0",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
-    "@darrinholst/protractor-cucumber-framework": "^1.0.1",
-    "cucumber": "^2.0.0-rc.9",
+    "protractor-cucumber-framework": "^3.0.0",
+    "cucumber": "^2.0.0",
     "protractor": "^5.0.0"
   },
   "homepage": "https://github.com/ReadyTalk/cukefarm",
