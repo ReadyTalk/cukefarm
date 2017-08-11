@@ -27,7 +27,7 @@ describe('the "___" should be displayed', function() {
     });
   });
 
-  describe('execution', function() {
+  xdescribe('execution', function() {
     beforeEach(function() {
       world.currentPage = {
         testSpan: element(By.css('span#testSpan'))
@@ -78,7 +78,7 @@ describe('the "___" should be displayed', function() {
       });
     });
 
-    xdescribe('without the element present', function() {
+    describe('without the element present', function() {
       beforeEach(function() {
         return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '';").then(function() {
           world.currentPage = {
