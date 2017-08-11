@@ -1,5 +1,4 @@
 describe('the "___" should be enabled', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);

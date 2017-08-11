@@ -22,30 +22,26 @@ describe('elementHelper', function() {
 
   describe('hasClass()', function() {
     afterEach(function() {
-      browser.driver.switchTo().defaultContent();
-      browser.driver.executeScript("fixtures.cleanUp();");
+      return browser.driver.executeScript("$('div#test').remove();");
     });
 
     it('should return true if the element has the given class', function() {
       var el;
-      browser.driver.executeScript("fixtures.set('<input id=\"testCheckbox\" class=\"test-class\"/>');");
-      browser.driver.switchTo().frame('js-fixtures');
+      browser.driver.executeScript("$('body').append('<input id=\"testCheckbox\" class=\"test-class\"/>')");
       el = $('input#testCheckbox');
       expect(elementHelper.hasClass(el, 'test-class')).to.eventually.equal(true);
     });
 
     it('should return false if the element does not have the given class', function() {
       var el;
-      browser.driver.executeScript("fixtures.set('<input id=\"testCheckbox\" class=\"test-class\"/>');");
-      browser.driver.switchTo().frame('js-fixtures');
+      browser.driver.executeScript("$('body').append('<input id=\"testCheckbox\" class=\"test-class\"/>')");
       el = $('input#testCheckbox');
       expect(elementHelper.hasClass(el, 'fake-class')).to.eventually.equal(false);
     });
 
     it('should return false if the element has no class', function() {
       var el;
-      browser.driver.executeScript("fixtures.set('<input id=\"testCheckbox\"/>');");
-      browser.driver.switchTo().frame('js-fixtures');
+      browser.driver.executeScript("$('body').append('<input id=\"testCheckbox\"/>')");
       el = $('input#testCheckbox');
       expect(elementHelper.hasClass(el, 'missing-class')).to.eventually.equal(false);
     });

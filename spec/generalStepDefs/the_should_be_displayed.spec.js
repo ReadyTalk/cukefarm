@@ -1,5 +1,4 @@
 describe('the "___" should be displayed', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);
@@ -59,11 +58,11 @@ describe('the "___" should be displayed', function() {
 
     describe('without the element displayed', function() {
       beforeEach(function() {
-        return browser.driver.executeScript("$('body').append('<span id=\"testSpan\" style=\"display:none;\">Span Text</span>');");
+        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '<span id=\"testSpan\" style=\"display:none;\">Span Text</span>';");
       });
 
       afterEach(function() {
-        return browser.driver.executeScript("$('span#testSpan').remove();");
+        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '';");
       });
 
       it('should succeed if it expects the element to not be displayed', function() {
@@ -81,7 +80,7 @@ describe('the "___" should be displayed', function() {
 
     xdescribe('without the element present', function() {
       beforeEach(function() {
-        return browser.driver.executeScript("$('span#testSpan').remove();").then(() => {
+        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '';").then(function() {
           world.currentPage = {
             testSpan: element(By.css('span#testSpan'))
           };

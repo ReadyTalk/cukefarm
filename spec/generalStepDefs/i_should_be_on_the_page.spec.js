@@ -1,5 +1,4 @@
 describe('I should be on the "___" page', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);

@@ -1,5 +1,4 @@
 describe('I click the "___" link', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);

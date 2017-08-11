@@ -1,5 +1,4 @@
 describe('I have a ___x___ screen size', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);

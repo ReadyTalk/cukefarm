@@ -7,7 +7,6 @@ var app = express();
 
 app.set('port', 9001);
 app.use(express["static"](path.join(__dirname, '..', '/spec/test_app')));
-app.use(express["static"](path.join(__dirname, '..', '/node_modules/js-fixtures')));
 
 var server = app.listen(app.get('port'), function() {
 

@@ -1,5 +1,4 @@
 describe('I select "___" in the "___" drop down list', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);

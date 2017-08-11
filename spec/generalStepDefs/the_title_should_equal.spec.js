@@ -1,5 +1,4 @@
 describe('the title should equal "___"', function() {
-  this.timeout(6000);
 
   before(function() {
     browser.manage().timeouts().implicitlyWait(100);
