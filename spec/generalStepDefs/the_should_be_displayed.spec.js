@@ -28,14 +28,11 @@ describe('the "___" should be displayed', function() {
   });
 
   describe('execution', function() {
-    beforeEach(function() {
+    after(function() {
+      return browser.driver.executeScript("$('span.testSpan').remove();");
     });
 
     describe('with the element displayed', function() {
-      afterEach(function() {
-        return browser.driver.executeScript("$('span.testSpan').remove();");
-      });
-
       it('should succeed if it expects the element to be displayed', function() {
         browser.driver.executeScript("$('body').append('<span id=\"testSpan1\" class=\"testSpan\">Span Text</span>');");
         world.currentPage = {
@@ -60,10 +57,6 @@ describe('the "___" should be displayed', function() {
     });
 
     describe('without the element displayed', function() {
-      afterEach(function() {
-        return browser.driver.executeScript("$('span.testSpan').remove();");
-      });
-
       it('should succeed if it expects the element to not be displayed', function() {
         browser.driver.executeScript("$('body').append('<span id=\"testSpan3\" class=\"testSpan\" style=\"display:none;\">Span Text</span>');");
         world.currentPage = {
@@ -88,19 +81,21 @@ describe('the "___" should be displayed', function() {
     });
 
     describe('without the element present', function() {
-      beforeEach(function() {
+      it('should succeed if it expects the element to not be displayed', function() {
         world.currentPage = {
           testSpan: element(By.css('span#testSpan5'))
         };
-      });
 
-      it('should succeed if it expects the element to not be displayed', function() {
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
 
       it('should fail if it expects the element to be displayed', function() {
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan6'))
+        };
+
         return executeStep('the "Test Span" should be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
         });
