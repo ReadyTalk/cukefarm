@@ -99,9 +99,10 @@ describe('"___" should have the text "___"', function() {
 
       describe('and a "should not" expectation', function() {
         it('should fail if the element contains the expected text', function() {
-          element(By.css('input')).sendKeys("Input Text");
-          return executeStep('the "Test Input" should not contain the text "Input Text"', function() {
-            expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+          return element(By.css('input')).sendKeys("Input Text").then(function() {
+            return executeStep('the "Test Input" should not contain the text "Input Text"', function() {
+              expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
+            });
           });
         });
 

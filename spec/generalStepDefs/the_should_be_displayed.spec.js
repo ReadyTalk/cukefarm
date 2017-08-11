@@ -27,29 +27,32 @@ describe('the "___" should be displayed', function() {
     });
   });
 
-  xdescribe('execution', function() {
+  describe('execution', function() {
     beforeEach(function() {
-      world.currentPage = {
-        testSpan: element(By.css('span#testSpan'))
-      };
     });
 
     describe('with the element displayed', function() {
-      beforeEach(function() {
-        return browser.driver.executeScript("$('body').append('<span id=\"testSpan\">Span Text</span>');");
-      });
-
       afterEach(function() {
-        return browser.driver.executeScript("$('span#testSpan').remove();");
+        return browser.driver.executeScript("$('span.testSpan').remove();");
       });
 
       it('should succeed if it expects the element to be displayed', function() {
+        browser.driver.executeScript("$('body').append('<span id=\"testSpan1\" class=\"testSpan\">Span Text</span>');");
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan1'))
+        };
+
         return executeStep('the "Test Span" should be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
 
       it('should fail if it expects the element to not be displayed', function() {
+        browser.driver.executeScript("$('body').append('<span id=\"testSpan2\" class=\"testSpan\">Span Text</span>');");
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan2'))
+        };
+
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
         });
@@ -57,21 +60,27 @@ describe('the "___" should be displayed', function() {
     });
 
     describe('without the element displayed', function() {
-      beforeEach(function() {
-        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '<span id=\"testSpan\" style=\"display:none;\">Span Text</span>';");
-      });
-
       afterEach(function() {
-        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '';");
+        return browser.driver.executeScript("$('span.testSpan').remove();");
       });
 
       it('should succeed if it expects the element to not be displayed', function() {
+        browser.driver.executeScript("$('body').append('<span id=\"testSpan3\" class=\"testSpan\" style=\"display:none;\">Span Text</span>');");
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan3'))
+        };
+
         return executeStep('the "Test Span" should not be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.PASSED);
         });
       });
 
       it('should fail if it expects the element to be displayed', function() {
+        browser.driver.executeScript("$('body').append('<span id=\"testSpan4\" class=\"testSpan\" style=\"display:none;\">Span Text</span>');");
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan4'))
+        };
+
         return executeStep('the "Test Span" should be displayed', function() {
           expect(currentStepResult.status).to.equal(Cucumber.Status.FAILED);
         });
@@ -80,11 +89,9 @@ describe('the "___" should be displayed', function() {
 
     describe('without the element present', function() {
       beforeEach(function() {
-        return browser.driver.executeScript("ng.probe(document.querySelector('my-app')).nativeElement.innerHTML = '';").then(function() {
-          world.currentPage = {
-            testSpan: element(By.css('span#testSpan'))
-          };
-        });
+        world.currentPage = {
+          testSpan: element(By.css('span#testSpan5'))
+        };
       });
 
       it('should succeed if it expects the element to not be displayed', function() {
