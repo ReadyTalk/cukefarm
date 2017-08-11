@@ -16,3 +16,4 @@ before_install:
 before_script:
     # Excludes gecko, see: https://github.com/angular/webdriver-manager/issues/216#issuecomment-293650564
     - "npm run webdriverUpdate -- --gecko false"
+    - "npm --prefix ./spec/test_app/ install ./spec/test_app/"

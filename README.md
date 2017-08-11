@@ -303,7 +303,8 @@ Note: The unit tests are the contract for the Step Definition names. Any changes
 
 * Install [Firefox]
 * Run `npm install` to download dependencies.
-* Run `npm test` to lint all files and run the unit tests.
+* Run `npm --prefix ./spec/test_app/ install ./spec/test_app/` to download dependencies for the test app.
+* Run `npm test` to run the unit tests.
 
 [Cucumber]:https://www.npmjs.com/package/cucumber
 [Protractor]:http://angular.github.io/protractor
