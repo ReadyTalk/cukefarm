@@ -20,7 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "cucumber": "^2.0.0",
-    "docha": "^0.1.2",
+    "docha": "git://github.com/thompsnm/docha#09b60cd",
     "express": "^4.14.1",
     "js-fixtures": "^1.5.3",
     "mocha": "^3.2.0",
