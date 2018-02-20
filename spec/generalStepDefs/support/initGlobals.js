@@ -10,25 +10,31 @@ var sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 global.expect = chai.expect;
 
+// Init Cucumber infrastructure
+Cucumber.supportCodeLibraryBuilder.reset(process.cwd());
+global.supportCodeLibrary = Cucumber.supportCodeLibraryBuilder.finalize()
+
 // Set up supportCodeLibrary
 require('../../../lib/step_definitions/GeneralStepDefs');
 require('../../../lib/support/Transform');
 require('../../../lib/support/World');
 
-// Init Cucumber infrastructure
-global.supportCodeLibrary = Cucumber.SupportCodeLibraryBuilder.build({
-  cwd: process.cwd(),
-  fns: Cucumber.getSupportCodeFns()
-});
-
-global.ScenarioRunner = require('../../../node_modules/cucumber/lib/runtime/scenario_runner');
-global.scenarioRunner = new ScenarioRunner.default({
+global.TestCaseRunner = require('../../../node_modules/cucumber/lib/runtime/test_case_runner');
+global.testCaseRunner = new TestCaseRunner.default({
   eventBroadcaster: {},
-  options: {},
-  scenario: {},
-  supportCodeLibrary: supportCodeLibrary
+  skip: false,
+  testCase: {
+    uri: "fakeUri",
+    pickle: {
+      locations: [
+        { line: "fakeLine" }
+      ]
+    }
+  },
+  supportCodeLibrary: supportCodeLibrary,
+  worldParameters: {}
 });
-global.world = scenarioRunner.world;
+global.world = testCaseRunner.world;
 
 // Init helper functions
 global.currentStepResult = null;
@@ -52,10 +58,11 @@ global.executeStep = (stepName, verification, keyword) => {
   keyword = keyword || 'Given';
   verification = verification || function() {};
 
-  return scenarioRunner.runStep({
+  return testCaseRunner.runStep({
     arguments: [],
-    name: stepName
+    text: stepName
   }).then(function(stepResult) {
+    console.log(stepResult);
     currentStepResult = stepResult;
     return verification();
   });
@@ -77,7 +84,7 @@ global.verifyStepCaptures = function() {
   var args = [].slice.call(arguments, 1);
 
   var stepDef = lookupStepDefinition(stepName);
-  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._regexp;
+  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._treeRegexp._re;
 
   args.forEach(function(arg) {
     expect(regexp.exec(stepName)).to.contain(arg);
@@ -89,7 +96,7 @@ global.verifyStepDoesNotCapture = function() {
   var args = [].slice.call(arguments, 1);
 
   var stepDef = lookupStepDefinition(stepName);
-  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._regexp;
+  var regexp = stepDef.getCucumberExpression(supportCodeLibrary.parameterTypeRegistry)._treeRegexp._re;
 
   args.forEach(function(arg) {
     expect(regexp.exec(stepName)).to.not.contain(arg);
