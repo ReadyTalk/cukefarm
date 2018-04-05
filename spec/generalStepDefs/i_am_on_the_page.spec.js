@@ -71,7 +71,7 @@ describe('I am on the "___" page', function() {
 
     it('should provide a clear error message if the Page Object was not added to the PageObjectMap', function() {
       return executeStep('I am on the "Missing" page', function() {
-        expect(currentStepResult.failureException.toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
+        expect(currentStepResult.exception.toString()).to.equal("Error: Could not find page with name 'Missing' in the PageObjectMap, did you remember to add it?");
       });
     });
   });
