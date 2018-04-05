@@ -2,7 +2,6 @@ node_modules/
 .tmp/
 spec/test_app/scripts/main.js
 npm-debug.log
-package-lock.json
 
 .idea/
 cukefarm.iml
