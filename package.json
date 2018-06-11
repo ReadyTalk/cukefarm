@@ -22,7 +22,6 @@
     "cucumber": "^2.0.0",
     "docha": "git://github.com/thompsnm/docha#09b60cd",
     "express": "^4.14.1",
-    "js-fixtures": "^1.5.3",
     "mocha": "^3.2.0",
     "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^3.0.0",
