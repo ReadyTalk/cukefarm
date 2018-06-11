@@ -20,9 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "cucumber": "^3.0.0",
-    "docha": "git://github.com/thompsnm/docha#09b60cd",
+    "docha": "git://github.com/thompsnm/docha.git#09b60cd",
     "express": "^4.14.1",
-    "js-fixtures": "^1.5.3",
     "mocha": "^3.2.0",
     "protractor": "^5.0.0",
     "protractor-cucumber-framework": "^4.2.0",
